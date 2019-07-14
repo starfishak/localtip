@@ -1,9 +1,10 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>PlaceDetail</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>{{pageinfo?.name}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  {{pageinfo?.location?.address?.text}}
+  <!-- <here-map appId="vUc1ZRcHoQbo5ewxIORP" appCode="kdj2WuRpwj3kouT9oEqO4w" [lat]="information?.location?.position[0]" [lng]="information?.location?.position[1]"></here-map> -->
 </ion-content>

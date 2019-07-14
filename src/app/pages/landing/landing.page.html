@@ -4,12 +4,21 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-searchbar [(ngModel)]="location" (ionChange)="searchChanged($event)"></ion-searchbar>
-  <!-- <ion-searchbar (ionChange)="searchChanged($event)"></ion-searchbar> -->
   <ion-list>
     <ion-item button *ngFor="let item of(results | async)" [routerLink]="['/', 'landing', item.id]">
-      {{item.title}}
+      <ion-avatar slot="start">
+        <img [src]="item.icon" *ngIf="item.icon != 'N/A'" />
+      </ion-avatar>
+      
+      <ion-label text-wrap>
+        <h3>{{item.title}}</h3>
+        <h5>{{item.category.title}}</h5>
+      </ion-label>
+      
+      <ion-icon slot="end" name="arrow-dropright"></ion-icon>
+
     </ion-item>
   </ion-list>
 </ion-content>

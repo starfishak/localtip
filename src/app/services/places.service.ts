@@ -22,7 +22,6 @@ apiCode = 'kdj2WuRpwj3kouT9oEqO4w';
   constructor(private http: HttpClient) { }
 
   searchData(location: string): Observable<any> {
-    //console.log("Location: " + location);
     return this.http.get(`${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=1000&pretty=true`)
     .pipe(
       map(results => {
