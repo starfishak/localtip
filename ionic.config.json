@@ -1,5 +1,7 @@
 {
   "name": "localtip",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

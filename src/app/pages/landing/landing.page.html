@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Nearby Locations</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-searchbar [(ngModel)]="location" (ionChange)="searchChanged($event)"></ion-searchbar>
+  <!-- <ion-searchbar (ionChange)="searchChanged($event)"></ion-searchbar> -->
+  <ion-list>
+    <ion-item button *ngFor="let item of(results | async)" [routerLink]="['/', 'landing', item.id]">
+      {{item.title}}
+    </ion-item>
+  </ion-list>
+</ion-content>
