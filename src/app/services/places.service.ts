@@ -12,7 +12,6 @@ export enum SearchType {
   providedIn: 'root'
 })
 export class PlacesService {
-// &in=52.521,13.3807;r=2000
 
 browse_url = 'https://places.cit.api.here.com/places/v1/discover/explore';
 lookup_url = 'https://places.cit.api.here.com/places/v1/places/lookup'
@@ -23,6 +22,16 @@ apiCode = 'kdj2WuRpwj3kouT9oEqO4w';
 
   searchData(location: string): Observable<any> {
     return this.http.get(`${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=1000&pretty=true`)
+    .pipe(
+      map(results => {
+        console.log('RAW: ', results['results']['items']);
+        return results['results'];
+      })
+    );
+  }
+
+  getDatabyUrl(url: string) {
+    return this.http.get(url)
     .pipe(
       map(results => {
         console.log('RAW: ', results['results']['items']);
