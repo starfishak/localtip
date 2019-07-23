@@ -3,7 +3,6 @@ import { Observable, observable } from 'rxjs';
 import { PlacesService } from 'src/app/services/places.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { resolveComponentResources } from '@angular/core/src/metadata/resource_loading';
-import { concat } from 'rxjs';
 
 @Component({
   selector: 'app-landing',
@@ -12,33 +11,77 @@ import { concat } from 'rxjs';
 })
 export class LandingPage implements OnInit {
 
-  results: Observable<any>;
+  results: any;
   // use global location temp
-  location = '61.2171,-149.8922';
+  location = '-43.952033,-176.559457';
   loading = false;
-  nextResults = '';
+  next = '';
+  more_data = true;
+  error_message: string;
 
-  constructor(private PlacesService: PlacesService, private geolocation: Geolocation) { }
 
-  ngOnInit() {
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.location = resp.coords.latitude + ',' + resp.coords.longitude;
-      this.results = this.PlacesService.searchData(this.location);
-      console.log(this.results);
+  constructor(private PlacesService: PlacesService, private geolocation: Geolocation) {}
 
-      // Store next results URL endpoint
-      //console.log("Next: ", this.results['next']);
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
+
+  async ngOnInit() {
+      console.log("about to run location")
+    await this.setLocation();
+      console.log("location set")
+    console.log("ngoninit location: " + this.location)
+    this.PlacesService.initData(this.location).subscribe(
+        (res) => {
+            this.results = res.items;
+            this.next = res.next;
+            this.more_data = true;
+        },
+        error =>  this.error_message = <any>error);
   }
 
-  loadMoreData(ev) {
-    console.log(this.nextResults);
-    this.results = concat(this.results, this.PlacesService.getDatabyUrl(this.nextResults));
+  loadData(ev) {
+    console.log("loadData called. next: " + this.next);
+    if (!this.more_data) {
+        console.log("no more data")
+        ev.target.disabled = true;
+    }
+
+    else {
+        // setTimeout(() => {
+            console.log("1")
+            this.PlacesService.getNextPage(this.location, this.next)
+                .subscribe(
+                    res => {
+                        console.log("3");
+                        for (let entry of res.items) {
+                            this.results.push(entry);
+                        }
+                        console.log("4");
+                        if (res.hasOwnProperty('next')) {
+                            this.next = res.next;
+                        }
+                        else {
+                            this.more_data = false;
+                        }
+                    },
+                    error => this.error_message = <any>error);
+        // }, 3000)
+        console.log("5")
+    }
+    console.log("6");
+    ev.target.complete();
+  }
+
+  async setLocation() {
+      console.log("set location")
+      await this.geolocation.getCurrentPosition().then((response) => {
+          this.location = response.coords.latitude + ',' + response.coords.longitude;
+          console.log("Set location: " + this.location);
+      }).catch((error) => {
+          console.log('Error getting location', error);
+      });
+      console.log("this is in the middle + location : " + this.location)
   }
 
   searchChanged(location) {
-    this.results = this.PlacesService.searchData(this.location);
+    console.log("changed")
   }
 }

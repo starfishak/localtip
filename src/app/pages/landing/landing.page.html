@@ -7,7 +7,7 @@
 <ion-content>
   <!-- <ion-searchbar [(ngModel)]="location" (ionChange)="searchChanged($event)"></ion-searchbar> -->
   <ion-list>
-    <ion-item button *ngFor="let item of(results.items | async)" [routerLink]="['/', 'landing', item.id]">
+    <ion-item button *ngFor="let item of (results)" [routerLink]="['/', 'landing', item.id]">
       <ion-avatar slot="start">
         <img [src]="item.icon" *ngIf="item.icon != 'N/A'" />
       </ion-avatar>
@@ -22,7 +22,7 @@
     </ion-item>
   </ion-list>
   
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreData($event)">
+  <ion-infinite-scroll threshold="30%" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content
     loadingSpinner="dots"
     loadingText="Loading more data...">
