@@ -3,6 +3,7 @@ import { Observable, observable } from 'rxjs';
 import { PlacesService } from 'src/app/services/places.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { resolveComponentResources } from '@angular/core/src/metadata/resource_loading';
+import {ScrollDetail} from '@ionic/core';
 
 @Component({
   selector: 'app-landing',
@@ -10,15 +11,14 @@ import { resolveComponentResources } from '@angular/core/src/metadata/resource_l
   styleUrls: ['./landing.page.scss'],
 })
 export class LandingPage implements OnInit {
-
   results: any;
-  // use global location temp
+  user_info: any;
   location = '-43.952033,-176.559457';
   loading = false;
   next = '';
   more_data = true;
   error_message: string;
-
+  showToolbar = false;
 
   constructor(private PlacesService: PlacesService, private geolocation: Geolocation) {}
 
@@ -26,13 +26,15 @@ export class LandingPage implements OnInit {
   async ngOnInit() {
       console.log("about to run location")
     await this.setLocation();
-      console.log("location set")
+    console.log("location set")
     console.log("ngoninit location: " + this.location)
     this.PlacesService.initData(this.location).subscribe(
         (res) => {
-            this.results = res.items;
-            this.next = res.next;
+            console.log(res);
+            this.results = res.results.items;
+            this.next = res.results.next;
             this.more_data = true;
+            this.user_info = res.search.context.location.address;
         },
         error =>  this.error_message = <any>error);
   }
@@ -55,8 +57,8 @@ export class LandingPage implements OnInit {
                             this.results.push(entry);
                         }
                         console.log("4");
-                        if (res.hasOwnProperty('next')) {
-                            this.next = res.next;
+                        if (res.results.hasOwnProperty('next')) {
+                            this.next = res.results.next;
                         }
                         else {
                             this.more_data = false;

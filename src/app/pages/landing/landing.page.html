@@ -1,31 +1,49 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Nearby Locations</ion-title>
-  </ion-toolbar>
+<ion-content>
+<ion-header no-border>
+    <ion-toolbar class="bar-subheader bar-stable" height="200px">
+        <img class="background-img" src="https://images.unsplash.com/photo-1442483221814-59f7d8b22739?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80" height="100%">
+
+        <div class="location-text">
+            <ion-icon name="pin"></ion-icon>
+            <br/>
+            {{user_info?.district}}
+            <br/>
+            {{user_info?.city}}
+        </div>
+        <div class="color-overlay"></div>
+    </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <!-- <ion-searchbar [(ngModel)]="location" (ionChange)="searchChanged($event)"></ion-searchbar> -->
-  <ion-list>
-    <ion-item button *ngFor="let item of (results)" [routerLink]="['/', 'landing', item.id]">
-      <ion-avatar slot="start">
-        <img [src]="item.icon" *ngIf="item.icon != 'N/A'" />
-      </ion-avatar>
-      
-      <ion-label text-wrap>
-        <h3>{{item.title}}</h3>
-        <h5>{{item.category.title}}</h5>
-      </ion-label>
-      
-      <ion-icon slot="end" name="arrow-dropright"></ion-icon>
+    <ion-grid>
+        <ion-row>
+            <ion-col button
+             [routerLink]="['/', 'landing', item.id]"
+             size="12"
+             size-xs="12"
+             size-sm="6"
+             size-md="4"
+             size-lg="3"
+             *ngFor="let item of (results)">
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-subtitle>{{item.category.title}}</ion-card-subtitle>
+                        <ion-card-title>{{item.title}}</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <div [innerHTML]="item.vicinity"></div>
+                    </ion-card-content>
+                    <ion-item>
+                        <ion-icon fill="outline" slot="end">View</ion-icon>
+                    </ion-item>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 
-    </ion-item>
-  </ion-list>
-  
   <ion-infinite-scroll threshold="30%" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content
-    loadingSpinner="dots"
-    loadingText="Loading more data...">
+        loadingSpinner="dots"
+        loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

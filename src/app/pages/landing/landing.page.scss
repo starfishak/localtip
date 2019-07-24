@@ -1,0 +1,40 @@
+//.toolbar-img {
+//  --background: linear-gradient(162deg, rgba(56, 70, 108, .8) 20%, rgba(56, 70, 108, .8) 100%), url('https://images.unsplash.com/photo-1442483221814-59f7d8b22739?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=&q=80') bottom no-repeat;
+//  height: 200px;
+//}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.bar-subheader {
+  height: auto !important;
+}
+
+.color-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -5;
+  background-color: rgba(56, 59, 64, 0.5);
+}
+
+ion-toolbar {
+  --background: transparent;
+  --ion-color-base: transparent !important;
+  position: relative;
+  text-align: center;
+}
+
+.location-text {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 23px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}

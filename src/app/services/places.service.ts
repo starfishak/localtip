@@ -25,7 +25,7 @@ apiCode = 'kdj2WuRpwj3kouT9oEqO4w';
           `${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=1000&pretty=true`)
           .pipe(
               // @ts-ignore
-            map(res => res.results),
+            map(res => res),
             catchError(this.handleError)
           );
   }
