@@ -1,15 +1,11 @@
-//.toolbar-img {
-//  --background: linear-gradient(162deg, rgba(56, 70, 108, .8) 20%, rgba(56, 70, 108, .8) 100%), url('https://images.unsplash.com/photo-1442483221814-59f7d8b22739?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=&q=80') bottom no-repeat;
-//  height: 200px;
-//}
-
-img {
-  width: 100%;
-  height: 100%;
-}
-
 .bar-subheader {
   height: auto !important;
+}
+
+.banner {
+  //background-image: var(--imgurl);
+  background-size:cover;
+  height: 200px;
 }
 
 .color-overlay {
@@ -32,9 +28,20 @@ ion-toolbar {
 .location-text {
   font-family: 'Nunito Sans', sans-serif;
   font-size: 23px;
-  position: absolute;
+  position:absolute;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
+  background-color: rgba(56, 59, 64, 0.5);
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+#pin-icon::before {
+  content: "\A";
 }

@@ -3,6 +3,7 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { Credentials } from 'src/cred';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,13 @@ export class PlacesService {
 
 browse_url = 'https://places.cit.api.here.com/places/v1/browse';
 lookup_url = 'https://places.cit.api.here.com/places/v1/places/lookup'
-apiKey = 'vUc1ZRcHoQbo5ewxIORP';
-apiCode = 'kdj2WuRpwj3kouT9oEqO4w';
+// Accidential apikey/code commit prior. Added credential file to .gitignore.
+    // Keys and codes have been regenerated since.
+apiCode = Credentials.apiCode;
+apiKey = Credentials.apiKey;
 
   constructor(private http: HttpClient) { }
+// create own observable
 
   initData(location: string) : Observable<any> {
       console.log("queryurl: " +
@@ -24,7 +28,6 @@ apiCode = 'kdj2WuRpwj3kouT9oEqO4w';
       return this.http.get(
           `${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=1000&pretty=true`)
           .pipe(
-              // @ts-ignore
             map(res => res),
             catchError(this.handleError)
           );
@@ -34,17 +37,17 @@ apiCode = 'kdj2WuRpwj3kouT9oEqO4w';
     console.log("2");
     return this.http.get(url)
         .pipe(
-        map(res => res),
-        catchError(this.handleError))
+            map(res => res),
+            catchError(this.handleError))
   }
 
-  extractData(res : Response) {
-      console.log("extract data");
-      console.log(res);
-      let body = res.json();
-      console.log("body: " + body)
-      return body || { };
-  }
+  // extractData(res : Response) {
+  //     console.log("extract data");
+  //     console.log(res);
+  //     let body = res.json();
+  //     console.log("body: " + body)
+  //     return body || { };
+  // }
 
   handleError(error: Response | any) {
       console.log("---error--- : " + error);
