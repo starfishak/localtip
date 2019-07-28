@@ -1,10 +1,17 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="light">
     <ion-title>{{pageinfo?.name}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  {{pageinfo?.location?.address?.text}}
-  <!-- <here-map appId="vUc1ZRcHoQbo5ewxIORP" appCode="kdj2WuRpwj3kouT9oEqO4w" [lat]="information?.location?.position[0]" [lng]="information?.location?.position[1]"></here-map> -->
+    <div class="map-snapshot-container" [style.background-image]="'url(' + pageinfo?.view + ')'">
+
+    </div>
+      {{pageinfo?.location?.address?.text}}
+      <!-- <here-map appId="vUc1ZRcHoQbo5ewxIORP" appCode="kdj2WuRpwj3kouT9oEqO4w" [lat]="information?.location?.position[0]" [lng]="information?.location?.position[1]"></here-map> -->
+      <ion-fab-button color="secondary" positon="end">
+          <ion-icon name="heart"></ion-icon>
+      </ion-fab-button>
+
 </ion-content>

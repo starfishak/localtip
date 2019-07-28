@@ -8,16 +8,18 @@ import {ScrollDetail} from '@ionic/core';
 import {HttpClient} from '@angular/common/http';
 import { Unsplash } from 'src/cred';
 
-
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
   styleUrls: ['./landing.page.scss'],
 })
+
+
+
 export class LandingPage implements OnInit {
   results: any;
   user_info: any;
-  location = '-42.8811368,147.3266763';
+  location = '47.6096225,-122.33829';
   loading = false;
   next = '';
   more_data = true;
@@ -76,11 +78,25 @@ export class LandingPage implements OnInit {
     ev.target.complete();
   }
 
-  headerImage() {
+  headerImage(search? : string) {
+      let search_term = this.user_info.city;
+      if (this.user_info.city == undefined) {
+          if (this.user_info.hasOwnProperty('stateCode')) {
+              search_term = this.user_info.stateCode;
+          }
+          else {
+              search_term = this.user_info.country;
+          }
+      }
        this.http.get(
-          `https://api.unsplash.com/search/photos?page=1&per_page=1&query=${this.user_info.city}&client_id=${Unsplash.apiKey}&client_secret=${Unsplash.secretKey}`
+          `https://api.unsplash.com/search/photos?page=1&per_page=1&query=${search_term}&client_id=${Unsplash.apiKey}&client_secret=${Unsplash.secretKey}`
       ).subscribe(
           res => {
+              console.log(this.user_info)
+              // @ts-ignore
+              if (res.total == 0) {
+                  this.headerImage(this.user_info.country)
+              }
               // @ts-ignore
               this.image_url = res.results[0].urls.regular;
               // @ts-ignore
@@ -103,4 +119,5 @@ export class LandingPage implements OnInit {
   searchChanged(location) {
     console.log("changed")
   }
+
 }

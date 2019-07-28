@@ -3,15 +3,58 @@
             [style.background-image]="'url(' + image_url + ')'">
 
     <ion-toolbar transparent>
+        <ion-button slot="end" color="light" fill="clear">
+            <ion-icon slot="icon-only" name="pin"></ion-icon>
+        </ion-button>
+        <ion-button slot="end" color="light" fill="clear">
+            <ion-icon slot="icon-only" name="person"></ion-icon>
+        </ion-button>
 
     </ion-toolbar>
 
     <div class="location-text">
-        {{user_info?.district}}
         <br />
-        {{user_info?.city}}
+        {{user_info?.district || user_info?.stateCode}}
+        <br />
+        {{user_info?.city || user_info?.country}}
     </div>
 </ion-header>
+
+<!--Chips-->
+    <div class="chip-header">
+<!--        <ion-label>Change Results...</ion-label>-->
+    </div>
+    <ion-chip>
+        <ion-icon name="wine" color="primary"></ion-icon>
+        <ion-label>Nightlife</ion-label>
+        <ion-icon name="close"></ion-icon>
+    </ion-chip>
+
+    <ion-chip>
+        <ion-icon name="film" color="primary"></ion-icon>
+        <ion-label>Movies</ion-label>
+        <ion-icon name="close"></ion-icon>
+    </ion-chip>
+
+    <ion-chip>
+        <ion-icon name="time" color="primary"></ion-icon>
+        <ion-label>Open Now</ion-label>
+        <ion-icon name="close"></ion-icon>
+    </ion-chip>
+
+    <ion-chip>
+        <ion-icon name="pizza" color="primary"></ion-icon>
+        <ion-label>Dinner</ion-label>
+        <ion-icon name="close"></ion-icon>
+    </ion-chip>
+
+    <ion-chip color="success">
+        <ion-label>Add More</ion-label>
+        <ion-icon name="add"></ion-icon>
+    </ion-chip>
+
+
+
 
     <ion-grid>
         <ion-row>
