@@ -195,14 +195,17 @@ export class LandingPage implements OnInit {
           }
       }
       console.log(mostElementCategories)
-      // @ts-ignore
-      let categoryIcon = mostElementCategories.id.replace(/-/g, '')
-      let icon = Categories[categoryIcon]
-      if (icon == undefined) {
-          icon = "pin"
+      // Checks if most promiminte catego
+      if (mostElementCategories.count != 0) {
+          // @ts-ignore
+          let categoryIcon = mostElementCategories.id.replace(/-/g, '')
+          let icon = Categories[categoryIcon]
+          if (icon == undefined) {
+              icon = "pin"
+          }
+          // @ts-ignore
+          this.chips.push([mostElementCategories.title, icon])
       }
-      // @ts-ignore
-      this.chips.push([mostElementCategories.title, icon])
 
       // Get Time Based Chips from interest service
       let timechips = InterestService.timeBasedChips();

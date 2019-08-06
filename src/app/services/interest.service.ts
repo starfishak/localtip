@@ -32,13 +32,13 @@ export class InterestService {
         if (hour > 16 && hour < 21) {
             chips.push(["Dinner", Categories["eatdrink"]])
         }
-        if (hour > 21 && hour < 4) {
+        if (hour > 21 || hour < 4) {
             chips.push(["Late Night Snack", Categories["eatdrink"]])
         }
 
         // Entertainment
-        if (hour > 20 && hour < 4) {
-            chips.push(["Nightlife", Categories["wine"]])
+        if (hour > 20 || hour < 4) {
+            chips.push(["Nightlife", Categories["goingout"]])
         }
         if (hour > 8 && hour < 17) {
             chips.push(["Outdoors", Categories["leisureoutdoor"]])
