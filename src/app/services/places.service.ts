@@ -18,36 +18,17 @@ apiCode = Credentials.apiCode;
 apiKey = Credentials.apiKey;
 
   constructor(private http: HttpClient) { }
-// create own observable
 
-  initData(location: string) : Observable<any> {
-      console.log("queryurl: " +
-          `${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=1000&pretty=true`);
-
-
-      return this.http.get(
+  initData(location: string)  {
+      let result = this.http.get(
           `${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=1000&pretty=true`)
-          .pipe(
-            map(res => res),
-            catchError(this.handleError)
-          );
+      return result
   }
 
-  getNextPage(location : string, url : string) : Observable<any> {
-    console.log("2");
-    return this.http.get(url)
-        .pipe(
-            map(res => res),
-            catchError(this.handleError))
+  getNextPage(url : string) {
+    let result = this.http.get(url);
+    return result
   }
-
-  // extractData(res : Response) {
-  //     console.log("extract data");
-  //     console.log(res);
-  //     let body = res.json();
-  //     console.log("body: " + body)
-  //     return body || { };
-  // }
 
   handleError(error: Response | any) {
       console.log("---error--- : " + error);

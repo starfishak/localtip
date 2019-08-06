@@ -22,13 +22,14 @@ import { Categories } from 'src/categories'
 
 export class LandingPage implements OnInit {
   // Results
-  results: any;
+  results = [];
+  out_of_results = { title: "Out of Places", category: { title: "Oh No!" }, vicinity: "Try expanding your search above." };
   user_info: any;
   location = '-46.6301012,169.068374';
   loading = false;
   search_toggled = false;
   next = '';
-  more_data = true;
+  more_data: boolean;
   error_message: string;
   showToolbar = false;
 
@@ -51,44 +52,55 @@ export class LandingPage implements OnInit {
     this.PlacesService.initData(this.location).subscribe(
         (res) => {
             console.log(res);
+            // @ts-ignore
             this.results = res.results.items;
-            this.next = res.results.next;
-            this.more_data = true; // TODO: failsafe
+            // @ts-ignore
             this.user_info = res.search.context.location.address;
             this.headerImage();
             this.generateChips();
+
+            // Next Page for Scroll
+            // @ts-ignore
+            this.next = res.results.next
+            if (this.next == undefined) {
+                this.more_data = false;
+                this.results.push(this.out_of_results)
+            }
+            else {
+                this.more_data = true;
+            }
         },
-        error =>  this.error_message = <any>error);
-  }
+        error =>  this.error_message = <any>error
+    );
+}
 
   loadData(ev) {
-    console.log("loadData called. next: " + this.next);
-    if (!this.more_data) {
-        console.log("no more data")
-        ev.target.disabled = true;
-    }
-
-    else {
-        console.log("1")
-        this.PlacesService.getNextPage(this.location, this.next)
-            .subscribe(
-                res => {
-                    for (let entry of res.items) {
-                        this.results.push(entry);
-                    }
-                    console.log("4");
-                    if (res.results.hasOwnProperty('next')) {
-                        this.next = res.results.next;
-                    }
-                    else {
-                        this.more_data = false;
-                    }
-                },
-                error => this.error_message = <any>error);
-        console.log("5")
-    }
-    console.log("6");
-    ev.target.complete();
+      if (!this.more_data) {
+          ev.target.disabled = true;
+      }
+      else {
+          this.PlacesService.getNextPage(this.next).subscribe(
+              (res) => {
+                  console.log(res);
+                  // @ts-ignore
+                  for(let entry of res.items) {
+                      this.results.push(entry);
+                  }
+                  // @ts-ignore
+                  console.log(res.next)
+                  // @ts-ignore
+                  if (res.next != undefined) {
+                      // @ts-ignore
+                      this.next = res.next;
+                  }
+                  else {
+                      this.more_data = false;
+                      this.results.push(this.out_of_results);
+                  }
+              }
+          )
+      }
+      ev.target.complete();
   }
 
   headerImage(useCountryImage? : boolean) {
@@ -136,7 +148,7 @@ export class LandingPage implements OnInit {
 
   // Called when user enters text into the locaiton search bar
   async locationSearch(event) {
-      let search = event.target.value.toLowerCase();
+    let search = event.target.value.toLowerCase();
     console.log("Location Search: ", search);
     const popover = await this.popoverController.create({component:LocationSearchPopoverComponent, componentProps:{searchTerm:search}})
     return await popover.present();
@@ -167,7 +179,6 @@ export class LandingPage implements OnInit {
       this.categories.categories = {}
       let mostElementCategories = {count: 0}
       for (let item of this.results) {
-          console.log(item)
           // @ts-ignore
           let category = item.category.id;
           if (this.categories.categories.hasOwnProperty(category)) {

@@ -5,7 +5,7 @@ import {Categories} from 'src/categories';
   providedIn: 'root'
 })
 export class InterestService {
-
+    userCategories: any;
 
     constructor() { }
 
@@ -53,7 +53,7 @@ export class InterestService {
             chips.push(["Banking/ATM", Categories["atmbankexchange"]])
         }
         if (hour > 10 && hour < 18) {
-            chips.push(["Museums/Popular Sights", Categories["sightsmuseums"]])
+            chips.push(["Popular Sights", Categories["sightsmuseums"]])
         }
         return chips
     }
