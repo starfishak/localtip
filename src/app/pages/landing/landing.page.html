@@ -1,61 +1,55 @@
-<ion-content>
+<ion-content [style.background-image]="'url(' + image_url + ')'" style="z-index: 1;">
 <ion-header no-border class="banner"
             [style.background-image]="'url(' + image_url + ')'">
 
+<!--    Header Image / Info Buttons-->
     <ion-toolbar transparent>
-        <ion-button slot="end" color="light" fill="clear">
-            <ion-icon slot="icon-only" name="pin"></ion-icon>
+        <ion-button slot="end" color="light" fill="clear" (click)="toggle_search()">
+            <ion-icon slot="icon-only" name="pin" *ngIf="!toggled"></ion-icon>
         </ion-button>
         <ion-button slot="end" color="light" fill="clear">
             <ion-icon slot="icon-only" name="person"></ion-icon>
         </ion-button>
-
     </ion-toolbar>
 
     <div class="location-text">
         <br />
-        {{user_info?.district || user_info?.stateCode}}
+        {{user_info?.district}}
         <br />
-        {{user_info?.city || user_info?.country}}
+        {{user_info?.city || user_info?.stateCode || user_info?.country}}
     </div>
 </ion-header>
 
+<!-- Custom Refresher Content -->
+<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" [disabled]="false" pullFactor=".5" pull-min="40" pull-max="150">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Refresh Location"
+            refreshingSpinner="circles"
+            refreshingText="Getting Location...">
+    </ion-refresher-content>
+</ion-refresher>
+
+<!--Location Search    -->
+<ion-searchbar
+        *ngIf="search_toggled"
+        placeholder="View Location"
+        searchIcon="pin"
+        [(ngModel)]="someValue"
+        (ionInput)="locationSearch($event)"
+        [showCancelButton]="false">
+</ion-searchbar>
+
 <!--Chips-->
-    <div class="chip-header">
-<!--        <ion-label>Change Results...</ion-label>-->
+    <div scrollx="true" class="chip-container">
+        <ion-chip class="choice-chip" *ngFor="let item of (chips)">
+            <ion-icon [name]="item[1]" color="primary"></ion-icon>
+            <ion-label>{{item[0]}}</ion-label>
+            <ion-icon name="close"></ion-icon>
+        </ion-chip>
     </div>
-    <ion-chip>
-        <ion-icon name="wine" color="primary"></ion-icon>
-        <ion-label>Nightlife</ion-label>
-        <ion-icon name="close"></ion-icon>
-    </ion-chip>
 
-    <ion-chip>
-        <ion-icon name="film" color="primary"></ion-icon>
-        <ion-label>Movies</ion-label>
-        <ion-icon name="close"></ion-icon>
-    </ion-chip>
-
-    <ion-chip>
-        <ion-icon name="time" color="primary"></ion-icon>
-        <ion-label>Open Now</ion-label>
-        <ion-icon name="close"></ion-icon>
-    </ion-chip>
-
-    <ion-chip>
-        <ion-icon name="pizza" color="primary"></ion-icon>
-        <ion-label>Dinner</ion-label>
-        <ion-icon name="close"></ion-icon>
-    </ion-chip>
-
-    <ion-chip color="success">
-        <ion-label>Add More</ion-label>
-        <ion-icon name="add"></ion-icon>
-    </ion-chip>
-
-
-
-
+<!--List Items-->
     <ion-grid>
         <ion-row>
             <ion-col button
@@ -82,9 +76,9 @@
         </ion-row>
     </ion-grid>
 
-  <ion-infinite-scroll threshold="30%" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll (ionInfinite)="loadData($event)" threshold="30%" >
     <ion-infinite-scroll-content
-        loadingSpinner="dots"
+        loadingSpinner="crescent"
         loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

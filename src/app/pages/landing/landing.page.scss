@@ -44,3 +44,25 @@ ion-toolbar {
   font-family: 'Nunito Sans', sans-serif;
   display: flex;
 }
+
+.chip-container {
+  padding-top: 7px;
+  padding-right: 7px;
+  padding-left: 7px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .refresher-pulling-text {
+    font-family: 'Nunito Sans', sans-serif;
+  }
+
+  .refresher-refreshing-text {
+    font-family: 'Nunito Sans', sans-serif;
+  }
+}
