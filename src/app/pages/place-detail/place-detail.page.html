@@ -30,7 +30,7 @@
                     <ion-label class="info-list-item" [innerHTML]="pageinfo?.location?.address?.text"></ion-label>
                 </ion-item>
                 <ion-item-options side="end">
-                    <ion-item-option (click)="unread(item)"><ion-icon name="compass"></ion-icon></ion-item-option>
+                    <ion-item-option (click)="open_navigation(pageinfo.location.position)"><ion-icon name="compass"></ion-icon></ion-item-option>
                 </ion-item-options>
             </ion-item-sliding>
 
@@ -59,8 +59,68 @@
                     </ion-item-options>
                 </ion-item-sliding>
             </span>
+
+            <span *ngIf="pageinfo?.contacts?.hasOwnProperty('email')">
+                <ion-item-sliding *ngFor="let item of pageinfo?.contacts?.website">
+                    <ion-item>
+                        <ion-label class="info-list-item">{{item.value}}</ion-label>
+                    </ion-item>
+                    <ion-item-options side="end">
+                        <ion-item-option (click)="open_link(item.value, item.label)">
+                            <ion-icon name="mail"></ion-icon>
+                        </ion-item-option>
+                    </ion-item-options>
+                </ion-item-sliding>
+            </span>
+
         </ion-list>
     </div>
+
+
+
+
+<!--    Only if Category is Public Transit-->
+    <div class="place-details" *ngIf="pageinfo?.categories[0].id == 'public-transport' && pageinfo?.extended?.transitLines">
+        <ion-label class="place-details-heading" *ngIf="schedule">
+            Departing Soon
+        </ion-label>
+
+<!--        <p class="transit-departures" *ngIf="pageinfo?.extended.departures" [innerHTML]="pageinfo?.extended.departures.text"></p>-->
+
+        <span *ngIf="schedule">
+            <ion-list *ngFor="let line of transit_departures">
+                <ion-item>
+                        <ion-chip outline color="primary" slot="start">
+                            <ion-label>{{line.line}}</ion-label>
+                        </ion-chip>
+                    <ion-label>
+                        <p class="info-list-item">{{line.direction}}</p>
+                        <p class="transit-departures">{{line.time}}</p>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+        </span>
+
+        <ion-label class="place-details-heading">
+            Transit Options
+        </ion-label>
+
+        <ion-list *ngFor="let line of (pageinfo?.extended?.transitLines?.destinations)">
+            <span>
+                <ion-item>
+                        <ion-chip outline color="primary" slot="start">
+                            <ion-label>{{line.line}}</ion-label>
+                        </ion-chip>
+                    <ion-label class="info-list-item">
+                        <span class="transit-direction">{{line.destination}}</span>
+                    </ion-label>
+                </ion-item>
+            </span>
+        </ion-list>
+    </div>
+
+
+
     <br />
     <div class="recommended-nearby">
         <ion-label class="place-details-heading">
@@ -77,10 +137,10 @@
                     </ion-label>
                 </ion-item>
                 <ion-item-options side="end">
-                    <ion-item-option (click)="open_link(item.value, item.label)">
+                    <ion-item-option [routerLink]="['/', 'landing', item.id]">
                         <ion-icon name="search"></ion-icon>
                     </ion-item-option>
-                    <ion-item-option (click)="open_link(item.value, item.label)">
+                    <ion-item-option (click)="open_navigation(item.location.position)">
                         <ion-icon name="compass"></ion-icon>
                     </ion-item-option>
                 </ion-item-options>
@@ -88,4 +148,42 @@
 
         </ion-list>
     </div>
+
+    <br />
+
+    <div class="transit-nearby" *ngIf="transit?.length != 0">
+        <ion-label class="place-details-heading">
+            Transit Stops Nearby
+        </ion-label>
+
+        <ion-list *ngFor="let item of (transit)">
+            <ion-item-sliding>
+                <ion-item>
+                    <ion-label>
+                        <p class="nearby-category">{{item.distance}} m</p>
+                        <p class="info-list-item">{{item.title}}</p>
+
+                        <div class="transit-numbers">
+                            <span *ngFor="let line of (item.transitLines.lines | keyvalue)">
+                                <ion-chip outline color="dark">
+                                    <ion-label [style.color]="line?.value?.style?.color">{{line.value.name}}</ion-label>
+                                </ion-chip>
+                            </span>
+                        </div>
+                    </ion-label>
+                </ion-item>
+                <ion-item-options side="end">
+                    <ion-item-option [routerLink]="['/', 'landing', item.id]">
+                        <ion-icon name="search"></ion-icon>
+                    </ion-item-option>
+                    <ion-item-option (click)="open_navigation(item.position)">
+                        <ion-icon name="compass"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+
+        </ion-list>
+    </div>
+
+
 </ion-content>

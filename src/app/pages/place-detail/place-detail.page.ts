@@ -15,6 +15,9 @@ export class PlaceDetailPage implements OnInit {
   mapimageuri: string;
   Icons = Icons;
   recommended: any;
+  transit: any;
+  transit_departures: any;
+  schedule : boolean = true
 
   constructor(private activatedRoute: ActivatedRoute, private PlacesService: PlacesService, private http : HttpClient) { }
 
@@ -22,21 +25,35 @@ export class PlaceDetailPage implements OnInit {
     let id = this.activatedRoute.snapshot.paramMap.get('id');
 
     this.PlacesService.getDetails(id).subscribe(result => {
-      console.log('result: ', result);
+      console.log(result)
       this.pageinfo = result;
+      this.getTransit()
       this.updateMapImage()
       this.getRecommended()
+      // @ts-ignore
+        if (result.categories[0].id == 'public-transport') {
+          this.getTransitDepartures();
+      }
     })
   }
 
   updateMapImage(){
       let latlong = this.pageinfo.location.position[0] + '%2C' + this.pageinfo.location.position[1]
-      console.log(latlong)
       this.mapimageuri = `https://image.maps.api.here.com/mia/1.6/mapview?c=${latlong}&z=16&app_id=${Credentials.apiKey}&app_code=${Credentials.apiCode}`
   }
 
   open_link(value : string, label: string) {
-      console.log("Open Link: " + value + " " + label)
+      let url = ''
+      if (label == "Phone") {
+            url = 'tel:' + value
+      }
+      else if (label == "Email") {
+            url = 'mailto:' + value
+      }
+      else {
+            url = value
+      }
+      window.open(url, '_blank')
   }
 
   getRecommended() {
@@ -49,5 +66,47 @@ export class PlaceDetailPage implements OnInit {
       )
   }
 
+  getTransit() {
+      let url = this.pageinfo.related['public-transport'].href;
+      this.http.get(url).subscribe(
+          (res) => {
+              // @ts-ignore
+              this.transit = res.items;
+              console.log(res.items)
+          }
+      )
+  }
 
+  getTransitDepartures() {
+      let departures = []
+      if (this.pageinfo.hasOwnProperty("extended")) {
+          if (this.pageinfo.extended.hasOwnProperty("departures")) {
+              for (let dep of this.pageinfo.extended.departures.schedule.items) {
+                  let date = new Date(dep.scheduled.departure)
+                  let dep_time = date.getHours() + ':' + date.getMinutes()
+                  let line = {
+                      direction: dep.direction,
+                      line: dep.line,
+                      time: dep_time
+                  }
+                  departures.push(line)
+              }
+              this.transit_departures = departures
+              console.log(this.transit_departures)
+          }
+          else {
+              this.schedule = false
+          }
+      }
+      else {
+          this.schedule = false
+      }
+  }
+
+  // Since this is not a production app, navigation will be opened via window.open
+    // as cordova plugins will not work in a testing environment
+  open_navigation(position) {
+      let url = "https://www.google.com/maps/search/?api=1&query=" + position[0] + ',' + position[1];
+      window.open(url, "_blank")
+  }
 }

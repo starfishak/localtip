@@ -35,6 +35,11 @@
   padding-right: 10px;
 }
 
+.transit-nearby {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .place-details-heading {
   font-family: 'Nunito Sans', sans-serif;
   font-size: 18px;
@@ -59,4 +64,36 @@
   font-size: 12px;
   color: darkgray;
   line-height: 90%;
+}
+
+.transit-numbers {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.transit-item {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.transit-departures {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  line-height: normal;
+}
+
+.transit-direction {
+  word-wrap: break-word;
 }

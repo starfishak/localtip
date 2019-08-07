@@ -46,6 +46,7 @@ export class PlacesService {
     }
 
     getDetails(id: string) {
+        console.log("Getting details: " + `${this.lookup_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&source=sharing&id=${id}`)
         return this.http.get(`${this.lookup_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&source=sharing&id=${id}`);
     }
 }
