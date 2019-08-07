@@ -25,69 +25,80 @@ export class LandingPage implements OnInit {
   results = [];
   out_of_results = { title: "Out of Places", category: { title: "Oh No!" }, vicinity: "Try expanding your search above." };
   user_info: any;
-  location = '-46.6301012,169.068374';
+  location = '-46.6301012,169.068374'; // Default Location if Error
   loading = false;
-  search_toggled = false;
   next = '';
   more_data: boolean;
   error_message: string;
   showToolbar = false;
 
+  // Search Location
+  search_toggled = false;
+
   // Images
-  image_url = 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80';
+  image_url = 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80'; // default image
   photographer = ""
 
   // Chips
   categories: any;
-  // chips = [["Dinner", "pizza"], ["Nightlife", "wine"], ["Movies", "film"], ["Open Now", "time"], ["Dinner", "pizza"], ["Nightlife", "wine"], ["Movies", "film"], ["Open Now", "time"]]
-    chips = []
+  chips = []
 
   constructor(private PlacesService: PlacesService, private InterestService: InterestService, private geolocation: Geolocation, private http: HttpClient, private popoverController : PopoverController) {}
 
+    /**
+     * Initial load of page
+     * In order:
+     *      - Gets user location
+     *      - Call places service on that location
+     *      - Subscribe to HTTP data
+     *      - Clean it
+     */
   async ngOnInit() {
-    console.log("about to run location")
     await this.setLocation();
-    console.log("location set")
-    console.log("ngoninit location: " + this.location)
     this.PlacesService.initData(this.location).subscribe(
         (res) => {
             console.log(res);
             // @ts-ignore
-            this.results = res.results.items;
+            this.results = res.results.items; // Items to display in list
             // @ts-ignore
-            this.user_info = res.search.context.location.address;
+            this.user_info = res.search.context.location.address;  // for vicinity and city title
             this.headerImage();
             this.generateChips();
 
             // Next Page for Scroll
             // @ts-ignore
             this.next = res.results.next
-            if (this.next == undefined) {
+            if (this.next == undefined) { // if next page is undefined/does not exist, there is no more data
                 this.more_data = false;
-                this.results.push(this.out_of_results)
+                this.results.push(this.out_of_results) // push last result card
             }
             else {
                 this.more_data = true;
             }
         },
-        error =>  this.error_message = <any>error
+        error =>  this.error_message = <any>error // push error if error
     );
 }
 
+    /**
+     * Called by Ion-Infinite to get more data when user reaches bottom of list.
+     * @param ev event of scroll, used to disable and call complete() method once op. is finished
+     */
   loadData(ev) {
+      // If out of data, disable infinife scroll
       if (!this.more_data) {
           ev.target.disabled = true;
       }
       else {
+          // Calls places service to get next page
           this.PlacesService.getNextPage(this.next).subscribe(
               (res) => {
-                  console.log(res);
+                  // Pushes new list items onto existing array
                   // @ts-ignore
                   for(let entry of res.items) {
                       this.results.push(entry);
                   }
-                  // @ts-ignore
-                  console.log(res.next)
+                  // Checks if there is more data in form of a next url provided by HERE API
                   // @ts-ignore
                   if (res.next != undefined) {
                       // @ts-ignore
@@ -103,6 +114,15 @@ export class LandingPage implements OnInit {
       ev.target.complete();
   }
 
+    /**
+     * Gets header image based on user location from the Unsplash API
+     * Prioritizes query in following order:
+     *      -city
+     *      -state code (USA)
+     *      -country
+     * @param useCountryImage optional parameter specifying whether to use the country as the seach query.
+     * e.g.: if Wellington, NZ does not exist as an image in the DB, use New Zealand as the query parameter
+     */
   headerImage(useCountryImage? : boolean) {
       console.log(this.user_info)
       let search_term = ''
@@ -135,6 +155,9 @@ export class LandingPage implements OnInit {
        )
   }
 
+    /**
+     * Gets user location and sets this parameter in variable
+     */
   async setLocation() {
       console.log("set location")
       await this.geolocation.getCurrentPosition().then((response) => {
@@ -146,7 +169,11 @@ export class LandingPage implements OnInit {
       console.log("this is in the middle + location : " + this.location)
   }
 
-  // Called when user enters text into the locaiton search bar
+    /**
+     * DEV FEATURE
+     * Called when user enters text into location search text
+     * @param event search event given by Ionic
+     */
   async locationSearch(event) {
     let search = event.target.value.toLowerCase();
     console.log("Location Search: ", search);
@@ -154,8 +181,18 @@ export class LandingPage implements OnInit {
     return await popover.present();
   }
 
+    /**
+     * DEV FEATURE
+     * Called when user presses search button on homepage
+     */
+    toggle_search() {
+        this.search_toggled = !this.search_toggled;
+    }
 
-  // Location Refresh Function. Called when user "Pulls down" on the homepage.
+    /**
+     * Location Refresh Function. Called when user "Pulls down" on the homepage.
+     * @param event Refresh Event provided by Ionic
+     */
   doRefresh(event) {
     // Call Init again - Refresh Location & Results. Makes things easier to just re-init the page.
     this.ngOnInit();
@@ -166,12 +203,10 @@ export class LandingPage implements OnInit {
     }, 2000);
   }
 
-  // Changes the state of the search bar
-  toggle_search() {
-      this.search_toggled = !this.search_toggled;
-  }
-
-  // Generates option chips for user
+    /**
+     * Generates option chips for user from the Interest Service
+     * See interest service for more details on how chips are generated.
+     */
   generateChips() {
       this.chips = []
       // Category Chips

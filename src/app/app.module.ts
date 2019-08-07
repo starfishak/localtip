@@ -10,9 +10,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 // Non-Generated Imports - note: add imports to imports array below
-// import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import {IonicStorageModule} from '@ionic/storage';
 
 
 @NgModule({
@@ -22,7 +22,9 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule],
+    HttpClientModule,
+    IonicStorageModule.forRoot()
+  ],
   providers: [
     StatusBar,
     SplashScreen,

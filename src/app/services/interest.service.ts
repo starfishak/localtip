@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Categories} from 'src/categories';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -7,10 +8,19 @@ import {Categories} from 'src/categories';
 export class InterestService {
     userCategories: any;
 
-    constructor() { }
+    constructor(private storage : Storage) { }
 
-    /** Generate time based chips for user to choose from
-     * returns: array with chips to display to the user.
+    initUserInterest() {
+        // set a key/value
+        this.storage.set('name', 'Test');
+        //going-out,sights-museums,transport
+        this.storage.get('name').then((val) => {
+            console.log('Your age is', val);
+        });
+    }
+
+    /**
+     * Generate array with time based chips for user to choose from
      */
     static timeBasedChips() {
         // Time Based

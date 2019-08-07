@@ -2,7 +2,7 @@
 <ion-header no-border class="banner"
             [style.background-image]="'url(' + image_url + ')'">
 
-<!--    Header Image / Info Buttons-->
+<!-- Header Image / Info Buttons-->
     <ion-toolbar transparent>
         <ion-button slot="end" color="light" fill="clear" (click)="toggle_search()">
             <ion-icon slot="icon-only" name="pin" *ngIf="!toggled"></ion-icon>
@@ -30,7 +30,10 @@
     </ion-refresher-content>
 </ion-refresher>
 
-<!--Location Search    -->
+<!--TODO Photographer Credit-->
+<!--    <span class="photo-credit"><ion-label>{{photographer}}</ion-label></span>-->
+
+<!--Location Search -->
 <ion-searchbar
         *ngIf="search_toggled"
         placeholder="View Location"

@@ -9,7 +9,6 @@
         <div class="fab-container">
             <ion-fab>
                 <ion-fab-button color="secondary">
-<!--                    <ion-icon [color]="saved. ? 'danger' : 'dark'" name="heart"></ion-icon>-->
                     <ion-icon color="light" name="heart"></ion-icon>
                 </ion-fab-button>
             </ion-fab>
@@ -18,7 +17,7 @@
 
     <div class="place-details">
         <ion-label class="place-details-heading">
-            Place Information
+            {{pageinfo?.name}}
         </ion-label>
         <ion-label *ngFor="let category of pageinfo?.categories">
             <p class="place-categories">{{category.title}}</p>
@@ -73,19 +72,20 @@
                 </ion-item-sliding>
             </span>
 
+            <span *ngIf="hours.available">
+                <ion-item>
+                    <ion-label class="hours" [color]="hours.color" [innerHTML]="hours.text"></ion-label>
+                </ion-item>
+            </span>
+
         </ion-list>
     </div>
-
-
-
 
 <!--    Only if Category is Public Transit-->
     <div class="place-details" *ngIf="pageinfo?.categories[0].id == 'public-transport' && pageinfo?.extended?.transitLines">
         <ion-label class="place-details-heading" *ngIf="schedule">
             Departing Soon
         </ion-label>
-
-<!--        <p class="transit-departures" *ngIf="pageinfo?.extended.departures" [innerHTML]="pageinfo?.extended.departures.text"></p>-->
 
         <span *ngIf="schedule">
             <ion-list *ngFor="let line of transit_departures">
@@ -140,7 +140,7 @@
                     <ion-item-option [routerLink]="['/', 'landing', item.id]">
                         <ion-icon name="search"></ion-icon>
                     </ion-item-option>
-                    <ion-item-option (click)="open_navigation(item.location.position)">
+                    <ion-item-option (click)="open_navigation(item.position)">
                         <ion-icon name="compass"></ion-icon>
                     </ion-item-option>
                 </ion-item-options>

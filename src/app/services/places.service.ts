@@ -10,43 +10,42 @@ import { Credentials } from 'src/cred';
 })
 export class PlacesService {
 
-    browse_url = 'https://places.cit.api.here.com/places/v1/browse';
+    /**
+     * HERE API Information
+     * Credentials imported from src/cred.ts file which is not included git repo
+     */
+    browse_url = 'https://places.cit.api.here.com/places/v1/discover/explore';
     lookup_url = 'https://places.cit.api.here.com/places/v1/places/lookup'
-// Accidential apikey/code commit prior. Added credential file to .gitignore.
-    // Keys and codes have been regenerated since.
     apiCode = Credentials.apiCode;
     apiKey = Credentials.apiKey;
 
     constructor(private http: HttpClient) {
     }
 
+    /**
+     * Get initial set of data from a set of coordinates
+     * @param location string coordinates as formatted string
+     */
     initData(location: string) {
         let result = this.http.get(
-            `${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=1000&pretty=true`)
+            `${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=1000&pretty=true&cat=going-out,sights-museums,transport`)
         return result
     }
 
+    /**
+     * Get the next page of data for infinite scroll.
+     * @param url URL entrypoint for the next set of data
+     */
     getNextPage(url: string) {
         let result = this.http.get(url);
         return result
     }
 
-    handleError(error: Response | any) {
-        console.log("---error--- : " + error);
-        let errMsg: string;
-        if (error instanceof Response) {
-            const body = error.json() || '';
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-            errMsg = error.message ? error.message : error.toString();
-        }
-        // console.error(errMsg);
-        return Observable.throw(errMsg);
-    }
-
+    /**
+     * Get information about a specific place with a given id
+     * @param id ID provided by the HERE API for a specific place.
+     */
     getDetails(id: string) {
-        console.log("Getting details: " + `${this.lookup_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&source=sharing&id=${id}`)
         return this.http.get(`${this.lookup_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&source=sharing&id=${id}`);
     }
 }
