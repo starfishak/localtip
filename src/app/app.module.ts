@@ -13,7 +13,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {IonicStorageModule} from '@ionic/storage';
-import {InterestSelectionComponent} from './components/interest-selection/interest-selection.component';
 
 
 @NgModule({

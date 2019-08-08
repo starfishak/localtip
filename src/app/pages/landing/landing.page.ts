@@ -9,7 +9,6 @@ import { HttpClient } from '@angular/common/http';
 import { Unsplash } from 'src/cred';
 import { PopoverController } from '@ionic/angular';
 import { LocationSearchPopoverComponent } from 'src/app/component/location-search-popover/location-search-popover.component';
-import { InterestSelectionComponent } from 'src/app/component/interest-selection/interest-selection.component'
 import { Categories } from 'src/categories'
 
 
@@ -18,7 +17,6 @@ import { Categories } from 'src/categories'
   templateUrl: './landing.page.html',
   styleUrls: ['./landing.page.scss'],
 })
-
 
 
 export class LandingPage implements OnInit {
@@ -59,7 +57,6 @@ export class LandingPage implements OnInit {
     await this.setLocation();
     this.PlacesService.initData(this.location).subscribe(
         (res) => {
-            console.log(res);
             // @ts-ignore
             this.results = res.results.items; // Items to display in list
             // @ts-ignore
@@ -126,7 +123,6 @@ export class LandingPage implements OnInit {
      * e.g.: if Wellington, NZ does not exist as an image in the DB, use New Zealand as the query parameter
      */
   headerImage(useCountryImage? : boolean) {
-      console.log(this.user_info)
       let search_term = ''
       if (useCountryImage) {
           search_term = this.user_info.country;
@@ -161,14 +157,10 @@ export class LandingPage implements OnInit {
      * Gets user location and sets this parameter in variable
      */
   async setLocation() {
-      console.log("set location")
       await this.geolocation.getCurrentPosition().then((response) => {
           this.location = response.coords.latitude + ',' + response.coords.longitude;
-          console.log("Set location: " + this.location);
       }).catch((error) => {
-          console.log('Error getting location', error);
       });
-      console.log("this is in the middle + location : " + this.location)
   }
 
     /**
@@ -207,10 +199,6 @@ export class LandingPage implements OnInit {
 
   async toggle_interests() {
       this.interests_toggled = !this.interests_toggled
-      const popover = await this.popoverController.create({
-          component: InterestSelectionComponent
-      })
-      return await popover.present();
   }
 
     /**

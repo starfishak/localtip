@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InterestSelectionComponent } from './interest-selection.component';
+import { InterestPage } from './interest.page';
 
-describe('InterestSelectionComponent', () => {
-  let component: InterestSelectionComponent;
-  let fixture: ComponentFixture<InterestSelectionComponent>;
+describe('InterestPage', () => {
+  let component: InterestPage;
+  let fixture: ComponentFixture<InterestPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InterestSelectionComponent ],
+      declarations: [ InterestPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InterestSelectionComponent);
+    fixture = TestBed.createComponent(InterestPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
