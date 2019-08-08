@@ -8,7 +8,8 @@ import { ScrollDetail } from '@ionic/core';
 import { HttpClient } from '@angular/common/http';
 import { Unsplash } from 'src/cred';
 import { PopoverController } from '@ionic/angular';
-import { LocationSearchPopoverComponent } from 'src/app/components/location-search-popover/location-search-popover.component';
+import { LocationSearchPopoverComponent } from 'src/app/component/location-search-popover/location-search-popover.component';
+import { InterestSelectionComponent } from 'src/app/component/interest-selection/interest-selection.component'
 import { Categories } from 'src/categories'
 
 
@@ -42,6 +43,7 @@ export class LandingPage implements OnInit {
   // Chips
   categories: any;
   chips = []
+  interests_toggled = false;
 
   constructor(private PlacesService: PlacesService, private InterestService: InterestService, private geolocation: Geolocation, private http: HttpClient, private popoverController : PopoverController) {}
 
@@ -201,6 +203,14 @@ export class LandingPage implements OnInit {
         // End the event after some time to remove the loading spinner. We do not want the user to be annoyed
         event.target.complete();
     }, 2000);
+  }
+
+  async toggle_interests() {
+      this.interests_toggled = !this.interests_toggled
+      const popover = await this.popoverController.create({
+          component: InterestSelectionComponent
+      })
+      return await popover.present();
   }
 
     /**
