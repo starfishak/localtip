@@ -48,4 +48,12 @@ export class PlacesService {
     getDetails(id: string) {
         return this.http.get(`${this.lookup_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&source=sharing&id=${id}`);
     }
+
+    /**
+     * Get data from the HERE API via provided URL, usually from href key-value pair in the returned JSON objects
+     * @param url given by HERE API with key: href
+     */
+    getDataFromURL(url : string) {
+        return this.http.get(url);
+    }
 }

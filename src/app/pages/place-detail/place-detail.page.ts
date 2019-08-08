@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlacesService } from 'src/app/services/places.service';
-import {HttpClient} from '@angular/common/http';
 import {Credentials} from 'src/cred';
 import {Icons} from './places-details-icons';
 
@@ -20,7 +19,7 @@ export class PlaceDetailPage implements OnInit {
   schedule : boolean = false
   hours : any = {available: false}
 
-  constructor(private activatedRoute: ActivatedRoute, private PlacesService: PlacesService, private http : HttpClient) { }
+  constructor(private activatedRoute: ActivatedRoute, private PlacesService: PlacesService) { }
 
   ngOnInit(){
     let id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -68,12 +67,12 @@ export class PlaceDetailPage implements OnInit {
   }
 
     /**
-     * Gets and parses recommended items from HERE API
+     * Gets and parses recommended nearby places from HERE API
      */
   getRecommended() {
       // Get Data
       let url = this.pageinfo.related.recommended.href;
-      this.http.get(url).subscribe(
+      this.PlacesService.getDataFromURL(url).subscribe(
           (res) =>
               // @ts-ignore
               this.recommended = res.items
@@ -81,11 +80,11 @@ export class PlaceDetailPage implements OnInit {
   }
 
     /**
-     * Gets relevent transit information
+     * Gets relevent transit information from href
      */
   getTransit() {
       let url = this.pageinfo.related['public-transport'].href;
-      this.http.get(url).subscribe(
+      this.PlacesService.getDataFromURL(url).subscribe(
           (res) => {
               // @ts-ignore
               this.transit = res.items;
@@ -94,7 +93,8 @@ export class PlaceDetailPage implements OnInit {
   }
 
     /**
-     * Gets departure schedule if available from API
+     * Gets departure schedule if available from API if available
+     * Two gates checking if this data exists in pageinfo object
      */
   getTransitDepartures() {
       let departures = []

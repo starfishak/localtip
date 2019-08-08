@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, observable } from 'rxjs';
 import { PlacesService } from 'src/app/services/places.service';
-import { InterestService } from 'src/app/services/interest.service'
+import { InterestService } from 'src/app/services/interest-service/interest.service'
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { resolveComponentResources } from '@angular/core/src/metadata/resource_loading';
 import { ScrollDetail } from '@ionic/core';
