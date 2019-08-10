@@ -1,4 +1,4 @@
-export const Categories = {
+export const CategoryIcons = {
     eatdrink: "restaurant",
     fooddrink: "restaurant",
     restaurant: "restaurant",

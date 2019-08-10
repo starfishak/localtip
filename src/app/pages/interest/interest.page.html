@@ -13,26 +13,22 @@
                      size-md="4"
                      size-lg="3"
                      *ngFor="let category of (categories)">
-                <ion-card>
-                    <ion-item-sliding>
+                <ion-card class="interest-card" [style.background-image]="'url(' + category.image + ')'">
+                    <div class="overlay">
                         <ion-card-header>
-                            <ion-card-subtitle>{{category.title}}</ion-card-subtitle>
                             <ion-card-title>{{category.title}}</ion-card-title>
                         </ion-card-header>
                         <ion-card-content>
-                            <div [innerHTML]="category.vicinity"></div>
+                            <ion-segment color="light" (ionChange)="segmentChanged()" >
+                                <ion-segment-button value="yes" class="segment-button" [checked]="category.active">
+                                    <ion-label>Yes</ion-label>
+                                </ion-segment-button>
+                                <ion-segment-button value="no" class="segment-button" [checked]="!category.active">
+                                    <ion-label>No</ion-label>
+                                </ion-segment-button>
+                            </ion-segment>
                         </ion-card-content>
-                        <ion-item>
-                            <ion-icon fill="outline" slot="end">View</ion-icon>
-                        </ion-item>
-
-                        <ion-item-options>
-                            <ion-item-option color="primary">
-                                <ion-icon slot="start" name="delete"></ion-icon>
-                                More
-                            </ion-item-option>
-                        </ion-item-options>
-                    </ion-item-sliding>
+                    </div>
                 </ion-card>
             </ion-col>
         </ion-row>

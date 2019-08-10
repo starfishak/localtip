@@ -63,9 +63,9 @@
              size-md="4"
              size-lg="3"
              *ngFor="let item of (results)">
-                <ion-card>
+                <ion-card class="location-card">
                     <ion-card-header>
-                        <ion-card-subtitle>{{item.category.title}}</ion-card-subtitle>
+                        <ion-card-subtitle>{{item.category.title}} | {{item.distance}} m</ion-card-subtitle>
                         <ion-card-title>{{item.title}}</ion-card-title>
                     </ion-card-header>
                     <ion-card-content>

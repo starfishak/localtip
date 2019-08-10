@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { Unsplash } from 'src/cred';
 import { PopoverController } from '@ionic/angular';
 import { LocationSearchPopoverComponent } from 'src/app/component/location-search-popover/location-search-popover.component';
-import { Categories } from 'src/categories'
+import { CategoryIcons } from 'src/app/category-icons'
 
 
 @Component({
@@ -22,7 +22,7 @@ import { Categories } from 'src/categories'
 export class LandingPage implements OnInit {
   // Results
   results = [];
-  out_of_results = { title: "Out of Places", category: { title: "Oh No!" }, vicinity: "Try expanding your search above." };
+  out_of_results = { title: "Out of Places", category: { title: "Oh No!" }, vicinity: "Try expanding your search above.", distance: 0 };
   user_info: any;
   location = '-46.6301012,169.068374'; // Default Location if Error
   loading = false;
@@ -227,12 +227,11 @@ export class LandingPage implements OnInit {
               this.categories.categories[category].id = category
           }
       }
-      console.log(mostElementCategories)
-      // Checks if most promiminte catego
+      // Checks if most promiminte category
       if (mostElementCategories.count != 0) {
           // @ts-ignore
           let categoryIcon = mostElementCategories.id.replace(/-/g, '')
-          let icon = Categories[categoryIcon]
+          let icon = CategoryIcons[categoryIcon]
           if (icon == undefined) {
               icon = "pin"
           }
@@ -241,7 +240,7 @@ export class LandingPage implements OnInit {
       }
 
       // Get Time Based Chips from interest service
-      let timechips = InterestService.timeBasedChips();
+      let timechips = this.InterestService.timeBasedChips();
       for (let chip of timechips) {
           this.chips.push(chip)
       }
