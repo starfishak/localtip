@@ -79,7 +79,11 @@ export class PlacesService {
         return result
     }
 
-
+    /**
+     * Process a geocode request for string query into Observable.
+     * I.E. takes query and converts it into a location based on the HERE API
+     * @param searchTerm location query to search
+     */
     getGeocode(searchTerm : string) {
         return this.http.get(`http://geocoder.api.here.com/6.2/search.json?app_id=${Credentials.apiKey}&app_code=${Credentials.apiCode}&searchtext=${searchTerm}`)
     }

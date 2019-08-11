@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PlacesService } from 'src/app/services/places.service';
+import { PlacesService } from 'src/app/services/places-service/places.service';
 import {Credentials} from 'src/cred';
 import {Icons} from './places-details-icons';
 

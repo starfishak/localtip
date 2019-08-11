@@ -26,7 +26,6 @@ export class InterestService {
         // checks if user is new
         return this.storage.length().then(
             res => {
-                console.log(res)
                 if (res == 0) {
                      return true
                 }
@@ -44,7 +43,6 @@ export class InterestService {
         for (let category in Categories) {
             this.storage.set(Categories[category].id, Categories[category])
         }
-        console.log("Default profile set")
     }
 
     /**
@@ -59,7 +57,6 @@ export class InterestService {
      * Gets the users interest/preference list for the interest page
      */
     getPreferenceList() {
-        console.log("called")
         this.preference_list = [] //reinit preference list to 0 items
 
         return this.storage.forEach(
@@ -86,7 +83,6 @@ export class InterestService {
                     res.active = !res.active
                     this.storage.set(id, res).then(
                         res => {
-                            console.log("Done")
                         }
                     )
                 }
@@ -154,7 +150,7 @@ export class InterestService {
         if (hour > 14 && hour < 16) {
             chips.push({title: "Snacks", icon: CategoryIcons["eatdrink"], id: "eat-drink", active:false})
         }
-        if (hour > 16 && hour < 21) {
+        if (hour > 16 && hour < 22) {
             chips.push({title: "Dinner", icon: CategoryIcons["eatdrink"], id:"eat-drink", active:false})
         }
         if (hour > 21 || hour < 4) {
@@ -168,7 +164,7 @@ export class InterestService {
         if (hour > 8 && hour < 17) {
             chips.push({title:"Outdoors", icon:CategoryIcons["leisureoutdoor"], id:"leisure-outdoor", active:false})
         }
-        if (hour > 17 && hour < 21) {
+        if (hour > 17 && hour < 23) {
             chips.push({title:"Accommodation", icon:CategoryIcons["accommodation"], id:"accommodation", active:false})
         }
         if (hour > 10 && hour < 16) {

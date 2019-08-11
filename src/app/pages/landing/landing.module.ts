@@ -6,7 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { LandingPage } from './landing.page';
-import {LocationSearchPopoverComponent} from 'src/app/component/location-search-popover/location-search-popover.component';
 
 const routes: Routes = [
   {
@@ -22,7 +21,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  entryComponents: [LocationSearchPopoverComponent],
-  declarations: [LandingPage, LocationSearchPopoverComponent]
+  entryComponents: [],
+  declarations: [LandingPage]
 })
 export class LandingPageModule {}

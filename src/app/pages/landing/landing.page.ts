@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, observable } from 'rxjs';
-import { PlacesService } from 'src/app/services/places.service';
+import { PlacesService } from 'src/app/services/places-service/places.service';
 import { InterestService } from 'src/app/services/interest-service/interest.service'
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { resolveComponentResources } from '@angular/core/src/metadata/resource_loading';
@@ -34,7 +34,7 @@ export class LandingPage implements OnInit {
   search_toggled = false;
 
   // Images
-  image_url = 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80'; // default image
+  image_url = 'https://lh3.googleusercontent.com/7_0wxws5JKsjyLay2ZHX75ye62hKUuQ3TG_hpyTDynTAuumCYzxVkX18lkGaJov__afqPTcEY59cdriloZWyADSOQBOYUTXfvsUIu7hS_5OC_ET8yex_NKrkh2qTgghVltdSXsf1EW727D-jWzyMcjsI7FYBUeoBsOM5eyCVuh0q9UwYKakEXMRIWS8hxOXKDBzoip_h_hZm6pJA3ryzLQ4wqL0FONZtc1eJ1-CFmPD-WzZwc3biTSsawZ_aWXtU78BRQz_sLMbQpeeM6MxFLl-90ivVzrXWBKembbNU0q7_nNumI0GIPBl7ewZfUmf3cSSjO8-Vyh_hKJIyR7woqlSbG09y3rGUX4c0FHpOnYfL-sKJPUXgFxbIGE1Za-KQw53nG8H63c4bDFgJAXRI8Ph6k1_cgE7eMJnBl-N_sxLmsrI-DVvqr4rYy8ntZoVc6RYyBJY7YYYt62Fb7M1TS6wSCETEhqpL15p5RJkOqH_XRZ8xIk9KrLuey82RbLopJeDO97ctnwQQr3Nyg_hg0rnDdB7tyOOALodjVfJRGJibSa_9Jq3KLrH4XDjckJrxyt5siJYuXHlIpQUPV0qh_9sT-usCRW8N7sOzXx8QqqiHuWwXWRJNGM1hF-60gx_Ch8KztjEgVI4zSNS6k2aeT2AKMePa9xOl=w1916-h1436-no'; // default image
   photographer = ""
 
   // Chips
