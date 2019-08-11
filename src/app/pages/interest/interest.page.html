@@ -19,11 +19,12 @@
                             <ion-card-title>{{category.title}}</ion-card-title>
                         </ion-card-header>
                         <ion-card-content>
-                            <ion-segment color="light" (ionChange)="segmentChanged()" >
-                                <ion-segment-button value="yes" class="segment-button" [checked]="category.active">
+                            <ion-segment color="light" (ionChange)="segmentChanged($event, category.id)">
+                                <ion-segment-button value="yes" [id]="category.id" class="segment-button" [checked]="category.active">
+<!--                                    [value]="category.active"-->
                                     <ion-label>Yes</ion-label>
                                 </ion-segment-button>
-                                <ion-segment-button value="no" class="segment-button" [checked]="!category.active">
+                                <ion-segment-button value="no" [id]="category.id" class="segment-button" [checked]="!category.active">
                                     <ion-label>No</ion-label>
                                 </ion-segment-button>
                             </ion-segment>

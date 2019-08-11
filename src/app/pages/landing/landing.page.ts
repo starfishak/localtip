@@ -25,11 +25,11 @@ export class LandingPage implements OnInit {
   out_of_results = { title: "Out of Places", category: { title: "Oh No!" }, vicinity: "Try expanding your search above.", distance: 0 };
   user_info: any;
   location = '-46.6301012,169.068374'; // Default Location if Error
+  radius = 1000;
   loading = false;
   next = '';
   more_data: boolean;
-  error_message: string;
-  showToolbar = false;
+  error_message: any;
 
   // Search Location
   search_toggled = false;
@@ -40,7 +40,8 @@ export class LandingPage implements OnInit {
 
   // Chips
   categories: any;
-  chips = []
+  chips: any;
+  active_chips = [];
   interests_toggled = false;
 
   constructor(private PlacesService: PlacesService, private InterestService: InterestService, private geolocation: Geolocation, private http: HttpClient, private popoverController : PopoverController) {}
@@ -55,28 +56,32 @@ export class LandingPage implements OnInit {
      */
   async ngOnInit() {
     await this.setLocation();
-    this.PlacesService.initData(this.location).subscribe(
-        (res) => {
-            // @ts-ignore
-            this.results = res.results.items; // Items to display in list
-            // @ts-ignore
-            this.user_info = res.search.context.location.address;  // for vicinity and city title
-            this.headerImage();
-            this.generateChips();
+    await this.PlacesService.initData(this.location, this.radius).then(
+        data => {
+            data.subscribe(
+                (res) => {
+                    // @ts-ignore
+                    this.results = res.results.items; // Items to display in list
+                    // @ts-ignore
+                    this.user_info = res.search.context.location.address;  // for vicinity and city title
+                    this.headerImage();
+                    this.generateChips();
 
-            // Next Page for Scroll
-            // @ts-ignore
-            this.next = res.results.next
-            if (this.next == undefined) { // if next page is undefined/does not exist, there is no more data
-                this.more_data = false;
-                this.results.push(this.out_of_results) // push last result card
-            }
-            else {
-                this.more_data = true;
-            }
-        },
-        error =>  this.error_message = <any>error // push error if error
-    );
+
+                    // Next Page for Scroll
+                    // @ts-ignore
+                    this.next = res.results.next
+                    if (this.next == undefined) { // if next page is undefined/does not exist, there is no more data
+                        this.more_data = false;
+                        this.results.push(this.out_of_results) // push last result card
+                    } else {
+                        this.more_data = true;
+                    }
+                },
+                error => this.error_message = <any>error // push error if error
+            );
+        }
+    )
 }
 
     /**
@@ -84,6 +89,7 @@ export class LandingPage implements OnInit {
      * @param ev event of scroll, used to disable and call complete() method once op. is finished
      */
   loadData(ev) {
+      console.log('loadData')
       // If out of data, disable infinife scroll
       if (!this.more_data) {
           ev.target.disabled = true;
@@ -227,8 +233,11 @@ export class LandingPage implements OnInit {
               this.categories.categories[category].id = category
           }
       }
-      // Checks if most promiminte category
+
+      // Checks if most prominent category
       if (mostElementCategories.count != 0) {
+          // @ts-ignore
+          let cateid = mostElementCategories.id;
           // @ts-ignore
           let categoryIcon = mostElementCategories.id.replace(/-/g, '')
           let icon = CategoryIcons[categoryIcon]
@@ -236,13 +245,91 @@ export class LandingPage implements OnInit {
               icon = "pin"
           }
           // @ts-ignore
-          this.chips.push([mostElementCategories.title, icon])
+          this.chips.push({title:mostElementCategories.title, icon:icon, id:cateid, active:false})
       }
+
+      // Expand Search Radius
+      this.chips.push({title: "Expand Radius", id: "radius", icon:"pin", active:false})
+
+      // Transit Chip
+      this.chips.push({title: "Public Transit", id: "transport", icon:"bus", active:false})
 
       // Get Time Based Chips from interest service
       let timechips = this.InterestService.timeBasedChips();
       for (let chip of timechips) {
           this.chips.push(chip)
       }
+
+      // Clear all filters chip
+      this.chips.push({title: "Clear Filters", id: "clear", icon:"close-circle", active:false})
   }
+
+    /**
+     * Toggles the list based on the users category selection from the chips
+     * @param id
+     */
+  searchByChip(id?: string) {
+      // Check if user is clearing filters or inc. radius
+      if (id == "radius") {
+          this.radius += 2000
+      }
+      else if(id == "clear") {
+           // remove active chips and refresh page to original settings
+          this.active_chips = []
+          this.toggleChipColor(id, this.chips.findIndex(item => item.id === id))
+          this.ngOnInit()
+          return
+      }
+      else {
+          // Begin toggle of a normal category
+          let chip_index = this.chips.findIndex(item => item.id === id)
+          if (this.chips[chip_index].active) {
+              let active_chip_index = this.active_chips.findIndex(item => item.id === id)
+              this.active_chips.splice(active_chip_index, 1)
+          }
+          else {
+              if (id != undefined) {
+                  this.active_chips.push({
+                      id: id
+                  })
+              }
+          }
+          this.toggleChipColor(id, chip_index)
+      }
+      let query = ""
+      for (let chip of this.active_chips) {
+          query += (chip.id + ',')
+      }
+
+      console.log(query)
+
+      this.PlacesService.getDataByCategory(query.substr(0, query.length-1), this.location, this.radius).subscribe(
+          (res) => {
+              // @ts-ignore
+              this.results = res.results.items; // Items to display in list
+              // @ts-ignore
+              this.next = res.results.next
+              if (this.next == undefined) { // if next page is undefined/does not exist, there is no more data
+                  // this.more_data = false;
+                  this.results.push(this.out_of_results) // push last result card
+              } else {
+                  this.more_data = true;
+              }
+          }
+      )
+  }
+
+    /**
+     * Toggles the color of a chip by changing the active atribute and reloading the DOM
+     * @param id ID of the category we are toggling
+     * @param chip_index index of where this category is found on this array chips
+     */
+  toggleChipColor(id : string, chip_index : number) {
+      console.log(this.chips[chip_index])
+      this.chips[chip_index].active = !this.chips[chip_index].active
+  //     let temp = this.chips.slice() // we make a copy by value since ionic will not update the DOM otherwise
+  //     this.chips = []
+  //     this.chips = temp
+  }
+
 }

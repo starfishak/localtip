@@ -18,6 +18,10 @@
         <br />
         {{user_info?.city || user_info?.stateCode || user_info?.country}}
     </div>
+
+    <span class="photo-credit-container">
+        <span class="photo-credit">Photo: {{photographer}}</span>
+    </span>
 </ion-header>
 
 <!-- Custom Refresher Content -->
@@ -29,9 +33,6 @@
             refreshingText="Getting Location...">
     </ion-refresher-content>
 </ion-refresher>
-
-<!--TODO Photographer Credit-->
-<!--    <span class="photo-credit"><ion-label>{{photographer}}</ion-label></span>-->
 
 <!--Location Search -->
 <ion-searchbar
@@ -45,10 +46,9 @@
 
 <!--Chips-->
     <div scrollx="true" class="chip-container">
-        <ion-chip class="choice-chip" *ngFor="let item of (chips)">
-            <ion-icon [name]="item[1]" color="primary"></ion-icon>
-            <ion-label>{{item[0]}}</ion-label>
-            <ion-icon name="close"></ion-icon>
+        <ion-chip class="choice-chip" *ngFor="let item of (chips)" (click)="searchByChip(item.id)" [outline]="!item.active">
+            <ion-icon [name]="item.icon" color="primary"></ion-icon>
+            <ion-label>{{item.title}}</ion-label>
         </ion-chip>
     </div>
 

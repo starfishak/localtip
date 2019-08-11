@@ -67,13 +67,19 @@ ion-toolbar {
     font-family: 'Nunito Sans', sans-serif;
   }
 
-  .photo-credit {
-    font-family: 'Nunito Sans', sans-serif;
-    font-size: 10px;
-    color: darkgray;
-    position: absolute;
-    text-align: right;
-  }
+.photo-credit {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 10px;
+  color: white;
+  position: relative;
+  text-align: left;
+}
+
+.photo-credit-container {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+}
 
 .location-card {
   font-family: 'Nunito Sans', sans-serif;
