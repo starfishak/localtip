@@ -8,7 +8,6 @@ import { ScrollDetail } from '@ionic/core';
 import { HttpClient } from '@angular/common/http';
 import { Unsplash } from 'src/cred';
 import { PopoverController } from '@ionic/angular';
-import { LocationSearchPopoverComponent } from 'src/app/component/location-search-popover/location-search-popover.component';
 import { CategoryIcons } from 'src/app/category-icons'
 
 
@@ -53,9 +52,12 @@ export class LandingPage implements OnInit {
      *      - Call places service on that location
      *      - Subscribe to HTTP data
      *      - Clean it
+     * @param locationProvided optional boolean if a location is preset and should not use the setLocation method
      */
-  async ngOnInit() {
-    await this.setLocation();
+  async ngOnInit(locationProvided? : boolean) {
+    if (!locationProvided) {
+        await this.setLocation();
+    }
     await this.PlacesService.initData(this.location, this.radius).then(
         data => {
             data.subscribe(
@@ -89,7 +91,6 @@ export class LandingPage implements OnInit {
      * @param ev event of scroll, used to disable and call complete() method once op. is finished
      */
   loadData(ev) {
-      console.log('loadData')
       // If out of data, disable infinife scroll
       if (!this.more_data) {
           ev.target.disabled = true;
@@ -170,20 +171,25 @@ export class LandingPage implements OnInit {
   }
 
     /**
-     * DEV FEATURE
-     * Called when user enters text into location search text
+     * Called when user enters text into location search text. Updates the list based on their query
      * @param event search event given by Ionic
      */
   async locationSearch(event) {
     let search = event.target.value.toLowerCase();
-    console.log("Location Search: ", search);
-    const popover = await this.popoverController.create({component:LocationSearchPopoverComponent, componentProps:{searchTerm:search}})
-    return await popover.present();
+    let location = this.PlacesService.getGeocode(search).subscribe(
+            (res : any) => {
+                let item = res.Response.View[0].Result[0]
+                // @ts-ignore
+                if (item.hasOwnProperty("Location")) {
+                    this.location = item.Location.DisplayPosition.Latitude + ',' + item.Location.DisplayPosition.Longitude;
+                }
+                this.ngOnInit(true);
+            }
+        )
   }
 
     /**
-     * DEV FEATURE
-     * Called when user presses search button on homepage
+     * Called when user presses search button on homepage to search by location
      */
     toggle_search() {
         this.search_toggled = !this.search_toggled;
@@ -203,6 +209,9 @@ export class LandingPage implements OnInit {
     }, 2000);
   }
 
+    /**
+     * Called when user presses "Person" icon to show the interest page
+     */
   async toggle_interests() {
       this.interests_toggled = !this.interests_toggled
   }
@@ -277,7 +286,7 @@ export class LandingPage implements OnInit {
            // remove active chips and refresh page to original settings
           this.active_chips = []
           this.toggleChipColor(id, this.chips.findIndex(item => item.id === id))
-          this.ngOnInit()
+          this.ngOnInit(true)
           return
       }
       else {
@@ -301,8 +310,6 @@ export class LandingPage implements OnInit {
           query += (chip.id + ',')
       }
 
-      console.log(query)
-
       this.PlacesService.getDataByCategory(query.substr(0, query.length-1), this.location, this.radius).subscribe(
           (res) => {
               // @ts-ignore
@@ -325,7 +332,6 @@ export class LandingPage implements OnInit {
      * @param chip_index index of where this category is found on this array chips
      */
   toggleChipColor(id : string, chip_index : number) {
-      console.log(this.chips[chip_index])
       this.chips[chip_index].active = !this.chips[chip_index].active
   //     let temp = this.chips.slice() // we make a copy by value since ionic will not update the DOM otherwise
   //     this.chips = []

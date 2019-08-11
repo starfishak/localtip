@@ -33,7 +33,6 @@ export class PlacesService {
         let search_radius = radius + ''
         return this.InterestService.getQueryString().then(
             query => {
-                console.log(`${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=${search_radius}&pretty=true&cat=${query}`)
                 let result = this.http.get(
                     `${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=${search_radius}&pretty=true&cat=${query}`)
                 return result
@@ -78,5 +77,10 @@ export class PlacesService {
         let result = this.http.get(
             `${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=${search_radius}&pretty=true&cat=${query}`)
         return result
+    }
+
+
+    getGeocode(searchTerm : string) {
+        return this.http.get(`http://geocoder.api.here.com/6.2/search.json?app_id=${Credentials.apiKey}&app_code=${Credentials.apiCode}&searchtext=${searchTerm}`)
     }
 }
