@@ -118,7 +118,7 @@ export class LandingPage implements OnInit {
           )
       }
       ev.target.complete();
-  }
+  }  
 
     /**
      * Gets header image based on user location from the Unsplash API

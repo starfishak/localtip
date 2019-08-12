@@ -8,7 +8,7 @@ export const Categories = {
     },
     restaurant: {
         id: "restaurant",
-        image: 'https://images.unsplash.com/photo-1515669097368-22e68427d265?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+        image: 'https://images.unsplash.com/photo-1515669097368-22e68427d265?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=60',
         title: "Restaurants",
         photographer: "Mgg Vitchakorn",
         active: false

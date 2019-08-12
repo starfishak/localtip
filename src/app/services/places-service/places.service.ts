@@ -73,7 +73,6 @@ export class PlacesService {
      */
     getDataByCategory(query : string, location : string, radius : number) {
         let search_radius = radius + ''
-        console.log(`${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=${search_radius}&pretty=true&cat=${query}`)
         let result = this.http.get(
             `${this.browse_url}?app_code=${this.apiCode}&app_id=${this.apiKey}&in=${encodeURI(location)};r=${search_radius}&pretty=true&cat=${query}`)
         return result
