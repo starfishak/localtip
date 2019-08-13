@@ -24,7 +24,7 @@ export class LandingPage implements OnInit {
   show_results = false;
   out_of_results = { title: "Out of Places", category: { title: "Oh No!" }, vicinity: "Try expanding your search above.", distance: 0, id: 1};
   user_info: any;
-  location = '-46.6301012,169.068374'; // Default Location if Error
+  location = '';
   radius = 1000;
   loading = false;
   next = '';
@@ -164,19 +164,28 @@ export class LandingPage implements OnInit {
 
     /**
      * Gets user location and sets this parameter in variable
+     * If error, pulls the users last known location from the InterestService storage module
      */
-  async setLocation() {
-      await this.geolocation.getCurrentPosition().then((response) => {
-          this.location = response.coords.latitude + ',' + response.coords.longitude;
-      }).catch((error) => {
-      });
-  }
+    async setLocation() {
+        await this.geolocation.getCurrentPosition().then((response) => {
+            this.location = response.coords.latitude + ',' + response.coords.longitude;
+            this.InterestService.setKnownLocation(this.location)
+        }).catch(async (error) => {
+            await this.InterestService.getLastLocation().then(
+                location => {
+                    console.log(location)
+                    this.location = location
+                }
+            )
+        });
+    }
 
     /**
      * Called when user enters text into location search text. Updates the list based on their query
      * @param event search event given by Ionic
      */
   async locationSearch(event) {
+    this.show_results = false
     let search = event.target.value.toLowerCase();
     let location = this.PlacesService.getGeocode(search).subscribe(
             (res : any) => {

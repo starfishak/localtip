@@ -179,4 +179,19 @@ export class InterestService {
         return chips
     }
 
+    /**
+     * Set a known location for the user incase their GPS is inaccessable. Called from landing-page setLocation function.
+     * @param location as a lat/long string seperated by comma
+     */
+    setKnownLocation(location : string) {
+        this.storage.set("location", location)
+    }
+
+    /**
+     * Returns the users last known location from the local store
+     */
+    getLastLocation() {
+        return this.storage.get("location")
+    }
+
 }

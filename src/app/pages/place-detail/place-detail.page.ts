@@ -25,7 +25,9 @@ export class PlaceDetailPage implements OnInit {
     let id = this.activatedRoute.snapshot.paramMap.get('id');
 
     if (id == "1") {
-        this.pageinfo = {}
+        this.pageinfo = {
+            name:"No Results Found",
+        }
         return
     }
 
