@@ -21,7 +21,8 @@ import { CategoryIcons } from 'src/app/category-icons'
 export class LandingPage implements OnInit {
   // Results
   results = [];
-  out_of_results = { title: "Out of Places", category: { title: "Oh No!" }, vicinity: "Try expanding your search above.", distance: 0 };
+  show_results = false;
+  out_of_results = { title: "Out of Places", category: { title: "Oh No!" }, vicinity: "Try expanding your search above.", distance: 0, id: 1};
   user_info: any;
   location = '-46.6301012,169.068374'; // Default Location if Error
   radius = 1000;
@@ -34,7 +35,7 @@ export class LandingPage implements OnInit {
   search_toggled = false;
 
   // Images
-  image_url = 'https://lh3.googleusercontent.com/7_0wxws5JKsjyLay2ZHX75ye62hKUuQ3TG_hpyTDynTAuumCYzxVkX18lkGaJov__afqPTcEY59cdriloZWyADSOQBOYUTXfvsUIu7hS_5OC_ET8yex_NKrkh2qTgghVltdSXsf1EW727D-jWzyMcjsI7FYBUeoBsOM5eyCVuh0q9UwYKakEXMRIWS8hxOXKDBzoip_h_hZm6pJA3ryzLQ4wqL0FONZtc1eJ1-CFmPD-WzZwc3biTSsawZ_aWXtU78BRQz_sLMbQpeeM6MxFLl-90ivVzrXWBKembbNU0q7_nNumI0GIPBl7ewZfUmf3cSSjO8-Vyh_hKJIyR7woqlSbG09y3rGUX4c0FHpOnYfL-sKJPUXgFxbIGE1Za-KQw53nG8H63c4bDFgJAXRI8Ph6k1_cgE7eMJnBl-N_sxLmsrI-DVvqr4rYy8ntZoVc6RYyBJY7YYYt62Fb7M1TS6wSCETEhqpL15p5RJkOqH_XRZ8xIk9KrLuey82RbLopJeDO97ctnwQQr3Nyg_hg0rnDdB7tyOOALodjVfJRGJibSa_9Jq3KLrH4XDjckJrxyt5siJYuXHlIpQUPV0qh_9sT-usCRW8N7sOzXx8QqqiHuWwXWRJNGM1hF-60gx_Ch8KztjEgVI4zSNS6k2aeT2AKMePa9xOl=w1916-h1436-no'; // default image
+  image_url = 'https://lh3.googleusercontent.com/4UwYMe1FJboZaf_u-O4Ri1FTv3tllTvqbZMnY4s2Nj1P_w06m55YsDp2dT2f3SwlI49Mp2ab636hoxzZ2yUIzWyUQ9pY80dUfnpCsy0c-LxSONQ6SqJyC0CKiIi1RkxZR0TKDhB9NM7ephyeC2FHDpFpb4GepM0TQiUhhUlpT0TtVnlnr3gyqKi5otr9doaHR4_3OldNnVWfGmEM7Kj1mTzkgntkti7cIbdRBMiOAWNSL0_TlsYW0oeRcliTmYDXWeIS5dFUJtoDSGJEkYiThV0ErkK0239VhOCqHpAJboA3pmISSoUJgra3B1T88BBENSkcp6WGuWdQhIQ25XAWIgGZ-2bjIHimobCv1wS_X1yN2cJDUoQ_BVyWARbPzopi_XV-Un86Gwh4-2wPh64uL7aoZf6ogCnKmjERJ7assEs3fFVVwB0iV-v4A-VUnirIF4d633uiXZG63pxdArWguEoDxBQ_whZCFSjTdabEGyYWFpWu7oNOBPWmUhZsd4rSh7YZaWceRomCn6OrSBYw7uCrUNrrVJTIZElrVGvQyCLF6LsF2tvOGFO6yYMnSfVqRc-3r4UMjngfN5yopVBplMOlZ8O48afbLfO2X6uYjd0WTEfhWDkw3x2L_eKBE3jxFewY7RxbRttqE_U6-CZ2iZdQmsAWJbNr=w2046-h1536-no'; // default image
   photographer = ""
 
   // Chips
@@ -64,6 +65,7 @@ export class LandingPage implements OnInit {
                 (res) => {
                     // @ts-ignore
                     this.results = res.results.items; // Items to display in list
+                    this.show_results = true;
                     // @ts-ignore
                     this.user_info = res.search.context.location.address;  // for vicinity and city title
                     this.headerImage();

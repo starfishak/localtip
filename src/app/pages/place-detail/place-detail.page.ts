@@ -24,6 +24,11 @@ export class PlaceDetailPage implements OnInit {
   ngOnInit(){
     let id = this.activatedRoute.snapshot.paramMap.get('id');
 
+    if (id == "1") {
+        this.pageinfo = {}
+        return
+    }
+
     this.PlacesService.getDetails(id).subscribe(result => {
       console.log(result)
       this.pageinfo = result;
