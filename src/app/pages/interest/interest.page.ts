@@ -18,7 +18,6 @@ export class InterestPage implements OnInit {
       if (status) {
           await this.InterestService.initUserInterest()
       }
-      // this.InterestService.printStorage()
       await this.InterestService.getPreferenceList()
       this.categories = this.InterestService.preference_list
   }

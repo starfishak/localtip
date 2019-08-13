@@ -210,143 +210,140 @@ export class LandingPage implements OnInit {
      * Location Refresh Function. Called when user "Pulls down" on the homepage.
      * @param event Refresh Event provided by Ionic
      */
-  doRefresh(event) {
-    // Call Init again - Refresh Location & Results. Makes things easier to just re-init the page.
-    this.ngOnInit();
+      doRefresh(event) {
+        // Call Init again - Refresh Location & Results. Makes things easier to just re-init the page.
+        this.ngOnInit();
 
-    setTimeout(() => {
-        // End the event after some time to remove the loading spinner. We do not want the user to be annoyed
-        event.target.complete();
-    }, 2000);
-  }
+        setTimeout(() => {
+            // End the event after some time to remove the loading spinner. We do not want the user to be annoyed
+            event.target.complete();
+        }, 2000);
+      }
 
     /**
      * Called when user presses "Person" icon to show the interest page
      */
-  async toggle_interests() {
-      this.interests_toggled = !this.interests_toggled
-  }
+      async toggle_interests() {
+          this.interests_toggled = !this.interests_toggled
+      }
 
     /**
      * Generates option chips for user from the Interest Service
      * See interest service for more details on how chips are generated.
      */
-  generateChips() {
-      this.chips = []
-      // Category Chips
-      this.categories = {}
-      this.categories.categories = {}
-      let mostElementCategories = {count: 0}
-      for (let item of this.results) {
-          // @ts-ignore
-          let category = item.category.id;
-          if (this.categories.categories.hasOwnProperty(category)) {
-              this.categories.categories[category].count += 1;
-              if (this.categories.categories[category].count > mostElementCategories.count) {
-                  mostElementCategories = this.categories.categories[category]
+      generateChips() {
+          this.chips = []
+          // Category Chips
+          this.categories = {}
+          this.categories.categories = {}
+          let mostElementCategories = {count: 0}
+          for (let item of this.results) {
+              // @ts-ignore
+              let category = item.category.id;
+              if (this.categories.categories.hasOwnProperty(category)) {
+                  this.categories.categories[category].count += 1;
+                  if (this.categories.categories[category].count > mostElementCategories.count) {
+                      mostElementCategories = this.categories.categories[category]
+                  }
+              }
+              else {
+                  this.categories.categories[category] = {}
+                  this.categories.categories[category].title = item.category.title
+                  this.categories.categories[category].count = 1;
+                  this.categories.categories[category].id = category
               }
           }
-          else {
-              this.categories.categories[category] = {}
-              this.categories.categories[category].title = item.category.title
-              this.categories.categories[category].count = 1;
-              this.categories.categories[category].id = category
+
+          // Checks if most prominent category
+          if (mostElementCategories.count != 0) {
+              // @ts-ignore
+              let cateid = mostElementCategories.id;
+              // @ts-ignore
+              let categoryIcon = mostElementCategories.id.replace(/-/g, '')
+              let icon = CategoryIcons[categoryIcon]
+              if (icon == undefined) {
+                  icon = "pin"
+              }
+              // @ts-ignore
+              this.chips.push({title:mostElementCategories.title, icon:icon, id:cateid, active:false})
           }
-      }
 
-      // Checks if most prominent category
-      if (mostElementCategories.count != 0) {
-          // @ts-ignore
-          let cateid = mostElementCategories.id;
-          // @ts-ignore
-          let categoryIcon = mostElementCategories.id.replace(/-/g, '')
-          let icon = CategoryIcons[categoryIcon]
-          if (icon == undefined) {
-              icon = "pin"
+          // Expand Search Radius
+          this.chips.push({title: "Expand Radius", id: "radius", icon:"pin", active:false})
+
+          // Transit Chip
+          this.chips.push({title: "Public Transit", id: "transport", icon:"bus", active:false})
+
+          // Get Time Based Chips from interest service
+          let timechips = this.InterestService.timeBasedChips();
+          for (let chip of timechips) {
+              this.chips.push(chip)
           }
-          // @ts-ignore
-          this.chips.push({title:mostElementCategories.title, icon:icon, id:cateid, active:false})
+
+          // Clear all filters chip
+          this.chips.push({title: "Clear Filters", id: "clear", icon:"close-circle", active:false})
       }
-
-      // Expand Search Radius
-      this.chips.push({title: "Expand Radius", id: "radius", icon:"pin", active:false})
-
-      // Transit Chip
-      this.chips.push({title: "Public Transit", id: "transport", icon:"bus", active:false})
-
-      // Get Time Based Chips from interest service
-      let timechips = this.InterestService.timeBasedChips();
-      for (let chip of timechips) {
-          this.chips.push(chip)
-      }
-
-      // Clear all filters chip
-      this.chips.push({title: "Clear Filters", id: "clear", icon:"close-circle", active:false})
-  }
 
     /**
      * Toggles the list based on the users category selection from the chips
      * @param id
      */
-  searchByChip(id?: string) {
-      // Check if user is clearing filters or inc. radius
-      if (id == "radius") {
-          this.radius += 2000
-      }
-      else if(id == "clear") {
-           // remove active chips and refresh page to original settings
-          this.active_chips = []
-          this.toggleChipColor(id, this.chips.findIndex(item => item.id === id))
-          this.ngOnInit(true)
-          return
-      }
-      else {
-          // Begin toggle of a normal category
-          let chip_index = this.chips.findIndex(item => item.id === id)
-          if (this.chips[chip_index].active) {
-              let active_chip_index = this.active_chips.findIndex(item => item.id === id)
-              this.active_chips.splice(active_chip_index, 1)
+      searchByChip(id?: string) {
+          // Check if user is clearing filters or inc. radius
+          if (id == "radius") {
+              this.radius += 2000
+          }
+          else if(id == "clear") {
+               // remove active chips and refresh page to original settings
+              this.active_chips = []
+              this.toggleChipColor(id, this.chips.findIndex(item => item.id === id))
+              this.ngOnInit(true)
+              return
           }
           else {
-              if (id != undefined) {
-                  this.active_chips.push({
-                      id: id
-                  })
+              // Begin toggle of a normal category
+              let chip_index = this.chips.findIndex(item => item.id === id)
+              if (this.chips[chip_index].active) {
+                  let active_chip_index = this.active_chips.findIndex(item => item.id === id)
+                  this.active_chips.splice(active_chip_index, 1)
               }
+              else {
+                  if (id != undefined) {
+                      this.active_chips.push({
+                          id: id
+                      })
+                  }
+              }
+              this.toggleChipColor(id, chip_index)
           }
-          this.toggleChipColor(id, chip_index)
-      }
-      let query = ""
-      for (let chip of this.active_chips) {
-          query += (chip.id + ',')
-      }
+          let query = ""
+          for (let chip of this.active_chips) {
+              query += (chip.id + ',')
+          }
 
-      this.PlacesService.getDataByCategory(query.substr(0, query.length-1), this.location, this.radius).subscribe(
-          (res) => {
-              // @ts-ignore
-              this.results = res.results.items; // Items to display in list
-              // @ts-ignore
-              this.next = res.results.next
-              if (this.next == undefined) { // if next page is undefined/does not exist, there is no more data
-                  // this.more_data = false;
-                  this.results.push(this.out_of_results) // push last result card
-              } else {
-                  this.more_data = true;
+          this.PlacesService.getDataByCategory(query.substr(0, query.length-1), this.location, this.radius).subscribe(
+              (res) => {
+                  // @ts-ignore
+                  this.results = res.results.items; // Items to display in list
+                  // @ts-ignore
+                  this.next = res.results.next
+                  if (this.next == undefined) { // if next page is undefined/does not exist, there is no more data
+                      // this.more_data = false;
+                      this.results.push(this.out_of_results) // push last result card
+                  } else {
+                      this.more_data = true;
+                  }
               }
-          }
-      )
-  }
+          )
+      }
 
     /**
      * Toggles the color of a chip by changing the active atribute and reloading the DOM
      * @param id ID of the category we are toggling
      * @param chip_index index of where this category is found on this array chips
      */
-  toggleChipColor(id : string, chip_index : number) {
-      this.chips[chip_index].active = !this.chips[chip_index].active
-  //     let temp = this.chips.slice() // we make a copy by value since ionic will not update the DOM otherwise
-  //     this.chips = []
-  //     this.chips = temp
-  }
+      toggleChipColor(id : string, chip_index : number) {
+          this.chips[chip_index].active = !this.chips[chip_index].active
+      }
 
 }

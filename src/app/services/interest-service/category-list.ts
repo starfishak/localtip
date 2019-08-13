@@ -69,13 +69,13 @@ export const Categories = {
         photographer: "Adora Goodenough",
         active: false
     },
-    administrativeareasbuildings: {
-        id: "administrative-areas-buildings",
-        image: "https://images.unsplash.com/photo-1523841589119-b55aee0f66e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=60",
-        title: "Administrative Buildings",
-        photographer: "Kyle Glenn",
-        active: false
-    },
+    // administrativeareasbuildings: {
+    //     id: "administrative-areas-buildings",
+    //     image: "https://images.unsplash.com/photo-1523841589119-b55aee0f66e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=60",
+    //     title: "Administrative Buildings",
+    //     photographer: "Kyle Glenn",
+    //     active: false
+    // },
     naturalgeographical: {
         id: "natural-geographical",
         image: "https://images.unsplash.com/photo-1548786811-dd6e453ccca7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=60",

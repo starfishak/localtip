@@ -30,7 +30,7 @@ export class InterestService {
                      return true
                 }
                 else {
-                    return false
+                     return false
                 }
             }
         )
@@ -75,6 +75,7 @@ export class InterestService {
     toggleInterest(id : string, toggle : string) {
         return this.storage.get(id).then(
             res => {
+                console.log(res)
                 let confirm = false // reason for this var and if gate exist, see interest.page.ts segmentChanged() method docs
                 if (toggle == "yes") {
                     confirm = true

@@ -32,7 +32,6 @@ export class PlaceDetailPage implements OnInit {
     }
 
     this.PlacesService.getDetails(id).subscribe(result => {
-      console.log(result)
       this.pageinfo = result;
       this.getHours()
       this.getTransit()
