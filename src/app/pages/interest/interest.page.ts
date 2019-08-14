@@ -20,6 +20,7 @@ export class InterestPage implements OnInit {
       }
       await this.InterestService.getPreferenceList()
       this.categories = this.InterestService.preference_list
+      console.log(this.categories)
   }
 
     /**
@@ -40,6 +41,10 @@ export class InterestPage implements OnInit {
      * @param id of the interest being toggled
      */
     async segmentChanged(event, id) {
+        console.log(id)
+        if (id == undefined) {
+            return
+        }
         this.InterestService.toggleInterest(id, event.target.value)
     }
 

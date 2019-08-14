@@ -61,7 +61,9 @@ export class InterestService {
 
         return this.storage.forEach(
             (key, value, iteration) => {
-                this.preference_list.push(key)
+                if (value != "location") {
+                    this.preference_list.push(key)
+                }
             }
         )
     }
@@ -75,12 +77,14 @@ export class InterestService {
     toggleInterest(id : string, toggle : string) {
         return this.storage.get(id).then(
             res => {
-                console.log(res)
+                if (res == undefined) {
+                    return
+                }
                 let confirm = false // reason for this var and if gate exist, see interest.page.ts segmentChanged() method docs
                 if (toggle == "yes") {
                     confirm = true
                 }
-                if (res.active !== confirm) {
+                if (res.active != confirm) {
                     res.active = !res.active
                     this.storage.set(id, res).then(
                         res => {

@@ -21,7 +21,6 @@
                         <ion-card-content>
                             <ion-segment color="light" (ionChange)="segmentChanged($event, category.id)">
                                 <ion-segment-button value="yes" [id]="category.id" class="segment-button" [checked]="category.active">
-<!--                                    [value]="category.active"-->
                                     <ion-label>Yes</ion-label>
                                 </ion-segment-button>
                                 <ion-segment-button value="no" [id]="category.id" class="segment-button" [checked]="!category.active">
