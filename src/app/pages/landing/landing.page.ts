@@ -7,7 +7,6 @@ import { resolveComponentResources } from '@angular/core/src/metadata/resource_l
 import { ScrollDetail } from '@ionic/core';
 import { HttpClient } from '@angular/common/http';
 import { Unsplash } from 'src/cred';
-import { PopoverController } from '@ionic/angular';
 import { CategoryIcons } from 'src/app/category-icons'
 
 
@@ -44,7 +43,7 @@ export class LandingPage implements OnInit {
   active_chips = [];
   interests_toggled = false;
 
-  constructor(private PlacesService: PlacesService, private InterestService: InterestService, private geolocation: Geolocation, private http: HttpClient, private popoverController : PopoverController) {}
+  constructor(private PlacesService: PlacesService, private InterestService: InterestService, private geolocation: Geolocation, private http: HttpClient) {}
 
     /**
      * Initial load of page
@@ -189,12 +188,24 @@ export class LandingPage implements OnInit {
     let search = event.target.value.toLowerCase();
     let location = this.PlacesService.getGeocode(search).subscribe(
             (res : any) => {
+                console.log(res)
                 let item = res.Response.View[0].Result[0]
                 // @ts-ignore
                 if (item.hasOwnProperty("Location")) {
                     this.location = item.Location.DisplayPosition.Latitude + ',' + item.Location.DisplayPosition.Longitude;
                 }
+                this.InterestService.setKnownLocation(this.location)
                 this.ngOnInit(true);
+                this.InterestService.getLastLocation().then(
+                    loc => {
+                        console.log("Use last known")
+                        this.location = loc
+                        this.ngOnInit(true)
+                    }
+                )
+            },
+        (error) => {
+                this.ngOnInit()
             }
         )
   }
