@@ -18,6 +18,7 @@ export class PlaceDetailPage implements OnInit {
   transit_departures: any;
   schedule : boolean = false
   hours : any = {available: false}
+  overlayHidden: boolean = false;
 
   constructor(private activatedRoute: ActivatedRoute, private PlacesService: PlacesService) { }
 
@@ -155,4 +156,12 @@ export class PlaceDetailPage implements OnInit {
       let url = "https://www.google.com/maps/search/?api=1&query=" + position[0] + ',' + position[1];
       window.open(url, "_blank")
   }
+
+
+
+    public hideOverlay() {
+        this.overlayHidden = true;
+    }
+
+
 }
