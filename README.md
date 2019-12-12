@@ -8,7 +8,7 @@ The mobile app gives a list of nearby places based on the users interests, as se
 
 | Homepage  | Homepage Search | Interest Page |
 | ------------- | ------------- | ------------- |
-| ![Homepage](screenshots/1.png)  | ![Homepage Search](screenshots/2.png)  | ![Interest Page](screenshots/3.png) |
+| ![Homepage](screenshots/1.png)  | ![Homepage Search](screenshots/2_a.png)  | ![Interest Page](screenshots/3.png) |
 
 | Place Details  | Public Transit Details | Skeleton Loading |
 | ------------- | ------------- | ------------- |
