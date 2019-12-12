@@ -158,7 +158,9 @@ export class PlaceDetailPage implements OnInit {
   }
 
 
-
+    /**
+     * Overlay close - Made for the report
+     */
     public hideOverlay() {
         this.overlayHidden = true;
     }

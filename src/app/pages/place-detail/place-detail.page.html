@@ -162,7 +162,6 @@
                     <ion-label>
                         <p class="nearby-category">{{item.distance}} m</p>
                         <p class="info-list-item">{{item.title}}</p>
-
                         <div class="transit-numbers">
                             <span *ngFor="let line of (item.transitLines.lines | keyvalue)">
                                 <ion-chip outline color="dark">
@@ -188,25 +187,25 @@
 
 </ion-content>
 
-<div class="my-overlay" padding [hidden]="overlayHidden">
-    <ion-button full (click)="hideOverlay()" slot="end"><ion-icon name="close"></ion-icon></ion-button>
-    <br />
-    <br />
-    <br /><br /><br /><br /><br /><br />
+<!--<div class="my-overlay" padding [hidden]="overlayHidden">-->
+<!--    <ion-button full (click)="hideOverlay()" slot="end"><ion-icon name="close"></ion-icon></ion-button>-->
+<!--    <br />-->
+<!--    <br />-->
+<!--    <br /><br /><br /><br /><br /><br />-->
 
 
 
-    <ion-item-sliding>
-        <ion-item class="overlay-card-title">
-<!--            <ion-label class="overlay-card-title">Tip</ion-label>-->
-            <ion-textarea readonly value="Slide information cards to the left to reveal more information. Try it now!"></ion-textarea>
-        </ion-item>
-        <ion-item-options side="end">
-            <ion-item-option (click)="hideOverlay()">
-                <ion-icon name="close"></ion-icon>
-            </ion-item-option>
-        </ion-item-options>
-    </ion-item-sliding>
+<!--    <ion-item-sliding>-->
+<!--        <ion-item class="overlay-card-title">-->
+<!--&lt;!&ndash;            <ion-label class="overlay-card-title">Tip</ion-label>&ndash;&gt;-->
+<!--            <ion-textarea readonly value="Slide information cards to the left to reveal more information. Try it now!"></ion-textarea>-->
+<!--        </ion-item>-->
+<!--        <ion-item-options side="end">-->
+<!--            <ion-item-option (click)="hideOverlay()">-->
+<!--                <ion-icon name="close"></ion-icon>-->
+<!--            </ion-item-option>-->
+<!--        </ion-item-options>-->
+<!--    </ion-item-sliding>-->
 
 
-</div>
+<!--</div>-->
