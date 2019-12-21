@@ -25,7 +25,7 @@ You can run the app with the ionic serve command. Use the developer tools to mim
 
 ### APIs ###
 
-You will need two sets of API keys to test the app, from the Here API and the Unsplash API. You may also request to use the development keys by sending an email to [support@sfeak.com](mailto:support@sfeak.com?subject=LocalTip Development Keys).
+You will need two sets of API keys to test the app, from the Here API and the Unsplash API. You may also request to use the development keys by sending an email to [support@sfeak.com](mailto:support@sfeak.com).
 
 #### Here API #### 
 [https://developer.here.com/](https://developer.here.com/)
